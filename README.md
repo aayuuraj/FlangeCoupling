@@ -22,12 +22,28 @@ A standalone CAD telemetry and engineering design workstation for the static des
 
 ---
 
-## Quick Start
+## Quick Start & Evaluation
 
-Open `index.html` in any modern web browser:
+### 1. Python Interactive Program (Recommended for Demonstration)
+Run directly in any terminal:
+```bash
+python3 coupling_design.py
+```
+- Interactive prompts for Torque (or Power/RPM), Factor of Safety, Material selection, and Constraints ($D_{max}, \theta_{max}$).
+- Generates a full mechanical design report, stress checks, Pass/Fail verification, and terminal ASCII technical cross-section schematic.
+- Automatically exports report to `coupling_report.txt`.
 
+### 2. C++ Program
+Compile and execute using standard `g++` / `clang++`:
+```bash
+g++ -O2 -std=c++17 coupling_design.cpp -o coupling_design
+./coupling_design
+```
+
+### 3. Interactive Web CAD Workstation
+Open `index.html` in any web browser:
 ```bash
 open index.html
 ```
-
 No build steps or dependencies required.
+
