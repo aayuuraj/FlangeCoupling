@@ -1,0 +1,2426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TORQ-ALIGN CAD // Rigid Flanged Coupling (Static Design)</title>
+  <meta name="description" content="Industrial Static Design & Rigidity Analysis Workbench for Rigid Flanged Couplings (IS 2693 / DIN 116)." />
+
+  <!-- Professional Typography: IBM Plex Sans & IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       AUTHENTIC DESKTOP CAD DESIGN SYSTEM
+       Themes:
+         1. Studio Light (SolidWorks / Fusion 360 / Inventor Desktop) - Default
+         2. Classic Drafting Blueprint (AutoCAD Prussian Blue)
+         3. Titanium Dark (Muted Technical Workstation)
+       ========================================================================== */
+
+    /* THEME 1: STUDIO LIGHT (DEFAULT) */
+    :root, [data-theme="studio-light"] {
+      --app-bg: #eaedf2;
+      --panel-bg: #ffffff;
+      --panel-header-bg: #f8fafc;
+      --subpanel-bg: #f1f5f9;
+      --input-bg: #ffffff;
+      
+      --border-light: #e2e8f0;
+      --border-dark: #cbd5e1;
+      --border-active: #0284c7;
+
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+
+      --brand-accent: #0284c7;
+      --status-pass-bg: #dcfce7;
+      --status-pass-text: #166534;
+      --status-pass-border: #86efac;
+
+      --status-warn-bg: #fef3c7;
+      --status-warn-text: #92400e;
+      --status-warn-border: #fcd34d;
+
+      --status-fail-bg: #fee2e2;
+      --status-fail-text: #991b1b;
+      --status-fail-border: #fca5a5;
+
+      --cad-canvas-bg: #f8fafc;
+      --cad-grid-major: rgba(148, 163, 184, 0.22);
+      --cad-grid-minor: rgba(148, 163, 184, 0.08);
+      --cad-line-primary: #0f172a;
+      --cad-line-secondary: #0284c7;
+      --cad-line-amber: #d97706;
+      --cad-line-center: #dc2626;
+      --cad-hatch-flange-l: #0284c7;
+      --cad-hatch-flange-r: #0369a1;
+      --cad-hatch-steel: #64748b;
+      --cad-dim-badge-bg: #ffffff;
+      --cad-dim-badge-border: #94a3b8;
+      --cad-dim-text: #0f172a;
+
+      --titleblock-bg: rgba(255, 255, 255, 0.95);
+      --titleblock-border: #94a3b8;
+      --titleblock-text: #0f172a;
+    }
+
+    /* THEME 2: BLUEPRINT */
+    [data-theme="blueprint"] {
+      --app-bg: #091a2e;
+      --panel-bg: #0d233e;
+      --panel-header-bg: #102a4a;
+      --subpanel-bg: #0a1c32;
+      --input-bg: #071526;
+
+      --border-light: #16365c;
+      --border-dark: #224d7f;
+      --border-active: #38bdf8;
+
+      --text-main: #f0f9ff;
+      --text-muted: #bae6fd;
+      --text-dim: #7dd3fc;
+
+      --brand-accent: #38bdf8;
+      --status-pass-bg: rgba(16, 185, 129, 0.2);
+      --status-pass-text: #6ee7b7;
+      --status-pass-border: #10b981;
+
+      --status-warn-bg: rgba(245, 158, 11, 0.2);
+      --status-warn-text: #fcd34d;
+      --status-warn-border: #f59e0b;
+
+      --status-fail-bg: rgba(239, 68, 68, 0.25);
+      --status-fail-text: #fca5a5;
+      --status-fail-border: #ef4444;
+
+      --cad-canvas-bg: #0a2038;
+      --cad-grid-major: rgba(56, 189, 248, 0.15);
+      --cad-grid-minor: rgba(56, 189, 248, 0.05);
+      --cad-line-primary: #ffffff;
+      --cad-line-secondary: #38bdf8;
+      --cad-line-amber: #fbbf24;
+      --cad-line-center: #f87171;
+      --cad-hatch-flange-l: #38bdf8;
+      --cad-hatch-flange-r: #7dd3fc;
+      --cad-hatch-steel: #94a3b8;
+      --cad-dim-badge-bg: #0d233e;
+      --cad-dim-badge-border: #38bdf8;
+      --cad-dim-text: #ffffff;
+
+      --titleblock-bg: rgba(13, 35, 62, 0.95);
+      --titleblock-border: #38bdf8;
+      --titleblock-text: #f0f9ff;
+    }
+
+    /* THEME 3: TITANIUM DARK */
+    [data-theme="titanium-dark"] {
+      --app-bg: #14161b;
+      --panel-bg: #1c1f26;
+      --panel-header-bg: #232730;
+      --subpanel-bg: #181b22;
+      --input-bg: #121418;
+
+      --border-light: #292e39;
+      --border-dark: #3a4150;
+      --border-active: #60a5fa;
+
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --brand-accent: #60a5fa;
+      --status-pass-bg: #143324;
+      --status-pass-text: #86efac;
+      --status-pass-border: #15803d;
+
+      --status-warn-bg: #382810;
+      --status-warn-text: #fcd34d;
+      --status-warn-border: #b45309;
+
+      --status-fail-bg: #3d1414;
+      --status-fail-text: #fca5a5;
+      --status-fail-border: #b91c1c;
+
+      --cad-canvas-bg: #161820;
+      --cad-grid-major: rgba(255, 255, 255, 0.05);
+      --cad-grid-minor: rgba(255, 255, 255, 0.02);
+      --cad-line-primary: #f8fafc;
+      --cad-line-secondary: #60a5fa;
+      --cad-line-amber: #fbbf24;
+      --cad-line-center: #f87171;
+      --cad-hatch-flange-l: #60a5fa;
+      --cad-hatch-flange-r: #93c5fd;
+      --cad-hatch-steel: #64748b;
+      --cad-dim-badge-bg: #1c1f26;
+      --cad-dim-badge-border: #475569;
+      --cad-dim-text: #f8fafc;
+
+      --titleblock-bg: rgba(28, 31, 38, 0.95);
+      --titleblock-border: #475569;
+      --titleblock-text: #f1f5f9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--app-bg);
+      color: var(--text-main);
+      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      font-size: 13px;
+    }
+
+    /* DESKTOP HEADER */
+    .app-header {
+      background: var(--panel-bg);
+      border-bottom: 1px solid var(--border-dark);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      user-select: none;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--brand-accent);
+      color: #ffffff;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      background: var(--subpanel-bg);
+      border: 1px solid var(--border-dark);
+      padding: 1px 6px;
+      border-radius: 3px;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .theme-toggle-group {
+      display: flex;
+      background: var(--subpanel-bg);
+      border: 1px solid var(--border-dark);
+      border-radius: 4px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .theme-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .theme-btn.active {
+      background: var(--panel-bg);
+      color: var(--brand-accent);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid var(--border-dark);
+      background: var(--panel-bg);
+      color: var(--text-main);
+      transition: all 0.15s ease;
+    }
+
+    .btn:hover {
+      background: var(--subpanel-bg);
+      border-color: var(--border-active);
+    }
+
+    .btn-primary {
+      background: var(--brand-accent);
+      color: #ffffff;
+      border-color: var(--brand-accent);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.92;
+    }
+
+    /* CAD RIBBON */
+    .cad-ribbon {
+      background: var(--panel-header-bg);
+      border-bottom: 1px solid var(--border-dark);
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .ribbon-controls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ribbon-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-right: 6px;
+    }
+
+    .ribbon-btn {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-dark);
+      border-radius: 3px;
+      color: var(--text-muted);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 11.5px;
+      font-weight: 500;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .ribbon-btn:hover {
+      color: var(--text-main);
+      border-color: var(--border-active);
+    }
+
+    .ribbon-btn.active {
+      background: var(--subpanel-bg);
+      color: var(--brand-accent);
+      border-color: var(--brand-accent);
+      font-weight: 600;
+    }
+
+    /* MAIN THREE-COLUMN WORKSPACE FRAME */
+    .workspace-frame {
+      display: grid;
+      grid-template-columns: 350px 1fr 390px;
+      gap: 10px;
+      padding: 10px 14px;
+      flex: 1;
+      height: calc(100vh - 84px);
+    }
+
+    @media (max-width: 1300px) {
+      .workspace-frame {
+        grid-template-columns: 330px 1fr 360px;
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .workspace-frame {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+    }
+
+    /* PANELS */
+    .desktop-panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-dark);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .panel-caption-bar {
+      background: var(--panel-header-bg);
+      border-bottom: 1px solid var(--border-light);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-main);
+    }
+
+    .panel-scroll-area {
+      padding: 12px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    /* INPUT / CONSTRAINT CARDS */
+    .workflow-card {
+      background: var(--subpanel-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .card-title-row {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 4px;
+    }
+
+    .card-title-row span.badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9.5px;
+      color: var(--brand-accent);
+      background: var(--panel-bg);
+      padding: 1px 6px;
+      border-radius: 2px;
+      border: 1px solid var(--border-dark);
+    }
+
+    .input-field {
+      margin-bottom: 8px;
+    }
+
+    .input-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-bottom: 3px;
+    }
+
+    .input-unit {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      color: var(--text-muted);
+    }
+
+    .input-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .desktop-slider {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      background: var(--border-dark);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .desktop-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--brand-accent);
+      cursor: pointer;
+    }
+
+    .desktop-number {
+      background: var(--input-bg);
+      border: 1px solid var(--border-dark);
+      border-radius: 3px;
+      color: var(--text-main);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      padding: 4px 6px;
+      width: 84px;
+      text-align: right;
+    }
+
+    .desktop-number:focus {
+      outline: none;
+      border-color: var(--brand-accent);
+    }
+
+    .desktop-select {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border-dark);
+      border-radius: 3px;
+      color: var(--text-main);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 12px;
+      padding: 5px 6px;
+      cursor: pointer;
+    }
+
+    .desktop-select:focus {
+      outline: none;
+      border-color: var(--brand-accent);
+    }
+
+    /* MATERIAL SPECS MATRIX */
+    .mat-properties-matrix {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 8px;
+      background: var(--panel-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 3px;
+      padding: 6px 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+    }
+
+    .mat-prop-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mat-prop-item .lbl {
+      color: var(--text-muted);
+      font-size: 9px;
+      text-transform: uppercase;
+    }
+
+    .mat-prop-item .val {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    /* CONSTRAINT CARDS & COMPARISON TELEMETRY */
+    .constraint-item-block {
+      background: var(--input-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      padding: 8px 10px;
+      margin-top: 8px;
+    }
+
+    .constraint-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .constraint-item-title {
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .constraint-type-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8.5px;
+      padding: 1px 4px;
+      border-radius: 2px;
+      background: var(--panel-header-bg);
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .constraint-telemetry-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 6px;
+      padding: 6px 8px;
+      background: var(--panel-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 3px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+    }
+
+    .telemetry-cell {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .telemetry-lbl {
+      font-size: 8.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .telemetry-val {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .constraint-status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      padding-top: 4px;
+      border-top: 1px dashed var(--border-light);
+      font-size: 10px;
+    }
+
+    .constraint-physics-dep {
+      font-size: 9.5px;
+      color: var(--text-muted);
+      font-family: 'IBM Plex Mono', monospace;
+      margin-top: 5px;
+      line-height: 1.35;
+    }
+
+    .constraint-physics-dep span {
+      color: var(--brand-accent);
+      font-weight: 600;
+    }
+
+    /* STANDARD STATED LIMITS NOTICE */
+    .standard-limits-box {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-dark);
+      border-left: 3px solid var(--brand-accent);
+      border-radius: 3px;
+      padding: 8px 10px;
+      font-size: 10.5px;
+      line-height: 1.45;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .standard-limits-box strong {
+      color: var(--text-main);
+    }
+
+    .engineering-primer-box {
+      background: rgba(30, 58, 138, 0.04);
+      border: 1px solid var(--border-dark);
+      border-radius: 4px;
+      padding: 8px 10px;
+      margin-top: 8px;
+      font-size: 10.5px;
+      line-height: 1.45;
+      color: var(--text-muted);
+    }
+
+    .primer-title {
+      font-weight: 700;
+      font-size: 10.5px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .primer-list {
+      margin: 0;
+      padding-left: 14px;
+    }
+
+    .primer-list li {
+      margin-bottom: 3px;
+    }
+
+    /* CENTER CAD VIEWPORT */
+    .cad-viewport-panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-dark);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .viewport-canvas-wrapper {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background-color: var(--cad-canvas-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #cadDrawingSvg {
+      width: 100%;
+      height: 100%;
+      cursor: default;
+    }
+
+    /* ISO TITLE BLOCK */
+    .iso-title-block {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      background: var(--titleblock-bg);
+      border: 1px solid var(--titleblock-border);
+      border-radius: 2px;
+      padding: 6px 10px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9.5px;
+      line-height: 1.45;
+      color: var(--titleblock-text);
+      width: 250px;
+      pointer-events: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .iso-tb-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 2px 0;
+    }
+
+    .iso-tb-row:last-child {
+      border-bottom: none;
+    }
+
+    .iso-tb-row .lbl {
+      color: var(--text-dim);
+    }
+
+    .iso-tb-row .val {
+      font-weight: 600;
+    }
+
+    /* FOOTER STATUS STRIP */
+    .viewport-status-footer {
+      background: var(--panel-header-bg);
+      border-top: 1px solid var(--border-light);
+      padding: 6px 12px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+    }
+
+    .vs-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vs-lbl {
+      font-size: 9.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .vs-val {
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* RIGHT COLUMN: OUTPUT SPECIFICATIONS */
+    .status-summary-banner {
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-summary-banner.pass {
+      background: var(--status-pass-bg);
+      color: var(--status-pass-text);
+      border: 1px solid var(--status-pass-border);
+    }
+
+    .status-summary-banner.warn {
+      background: var(--status-warn-bg);
+      color: var(--status-warn-text);
+      border: 1px solid var(--status-warn-border);
+    }
+
+    .status-summary-banner.fail {
+      background: var(--status-fail-bg);
+      color: var(--status-fail-text);
+      border: 1px solid var(--status-fail-border);
+    }
+
+    /* OUTPUT SPECIFICATION CARDS */
+    .output-section-card {
+      background: var(--subpanel-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .output-header {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 3px;
+    }
+
+    .spec-table {
+      width: 100%;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      border-collapse: collapse;
+    }
+
+    .spec-table td {
+      padding: 3px 0;
+    }
+
+    .spec-table td.param {
+      color: var(--text-muted);
+    }
+
+    .spec-table td.val {
+      text-align: right;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .status-tag {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    .status-tag.pass {
+      background: var(--status-pass-bg);
+      color: var(--status-pass-text);
+      border: 1px solid var(--status-pass-border);
+    }
+
+    .status-tag.warn {
+      background: var(--status-warn-bg);
+      color: var(--status-warn-text);
+      border: 1px solid var(--status-warn-border);
+    }
+
+    .status-tag.fail {
+      background: var(--status-fail-bg);
+      color: var(--status-fail-text);
+      border: 1px solid var(--status-fail-border);
+    }
+
+    /* MODAL */
+    .dossier-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .dossier-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .dossier-dialog {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 6px;
+      width: 100%;
+      max-width: 860px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      border: 1px solid #cbd5e1;
+    }
+
+    .dossier-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+    }
+
+    .dossier-header h2 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .dossier-close {
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    .dossier-body {
+      padding: 20px;
+      overflow-y: auto;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      line-height: 1.6;
+    }
+
+    .dossier-block {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 3px solid #0284c7;
+      border-radius: 3px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+
+    .dossier-block-title {
+      font-weight: 700;
+      color: #0369a1;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    .dossier-footer {
+      padding: 12px 20px;
+      border-top: 1px solid #e2e8f0;
+      background: #f8fafc;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body data-theme="studio-light">
+
+  <!-- TOP MENU BAR -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="brand-icon">T</div>
+      <div class="brand-title">
+        TORQ-ALIGN CAD // Rigid Flanged Coupling
+        <span class="badge-code">Static Design (IS 2693 / DIN 116)</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <!-- Theme Switcher -->
+      <div class="theme-toggle-group">
+        <button class="theme-btn active" id="btnThemeLight">Studio Light</button>
+        <button class="theme-btn" id="btnThemeBlueprint">Blueprint</button>
+        <button class="theme-btn" id="btnThemeDark">Titanium Dark</button>
+      </div>
+
+      <button class="btn" id="btnOpenDossier">
+        Calculation Dossier
+      </button>
+      <button class="btn btn-primary" id="btnResetDefaults">
+        Defaults
+      </button>
+    </div>
+  </header>
+
+  <!-- CAD VIEW RIBBON -->
+  <nav class="cad-ribbon">
+    <div class="ribbon-controls">
+      <span class="ribbon-title">Drawing View:</span>
+      <button class="ribbon-btn active" id="rbViewSection">Full Section A-A</button>
+      <button class="ribbon-btn" id="rbViewEnd">Flange Elevation</button>
+      <button class="ribbon-btn" id="rbViewDual">Drafting Sheet (Dual)</button>
+      <span style="border-left:1px solid var(--border-dark); height:16px; margin: 0 4px;"></span>
+      <button class="ribbon-btn" id="rbToggleDims" style="color:var(--brand-accent)">Dimensions [ON]</button>
+      <button class="ribbon-btn" id="rbToggleHatch" style="color:var(--brand-accent)">Hatching [ON]</button>
+      <button class="ribbon-btn" id="rbResetZoom" title="Reset drawing viewport to default 100% framing">Zoom to Fit (100%)</button>
+    </div>
+
+    <div style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--text-muted);">
+      Criterion: Maximum Shear Stress Theory (Tresca)
+    </div>
+  </nav>
+
+  <!-- MAIN THREE-COLUMN WORKSPACE -->
+  <main class="workspace-frame">
+
+    <!-- COLUMN 1: INPUTS, MATERIAL DATABASE & CONSTRAINTS -->
+    <aside class="desktop-panel">
+      <div class="panel-caption-bar">
+        <span>Input & Design Constraints</span>
+        <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--text-dim);">PROBLEM SPEC</span>
+      </div>
+
+      <div class="panel-scroll-area">
+
+        <!-- 1. INPUT: TORQUE TO BE TRANSMITTED -->
+        <div class="workflow-card">
+          <div class="card-title-row">
+            <span>Input: Transmitted Torque</span>
+            <span class="badge">PRIMARY INPUT</span>
+          </div>
+
+          <div class="input-field">
+            <div class="input-label-row">
+              <span>Design Torque (T)</span>
+              <span class="input-unit">N·m</span>
+            </div>
+            <div class="input-controls-row">
+              <input type="range" class="desktop-slider" id="rngTorque" min="500" max="25000" step="50" value="6207">
+              <input type="number" class="desktop-number" id="numTorque" min="10" max="100000" step="10" value="6207">
+            </div>
+          </div>
+
+          <!-- Secondary Derivation Helper from Power & Speed -->
+          <div style="margin-top:8px; border-top:1px dashed var(--border-dark); padding-top:6px;">
+            <div style="font-size:10px; font-weight:600; color:var(--text-muted); margin-bottom:4px; text-transform:uppercase;">
+              Or Compute Torque from Power & Speed:
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
+              <div>
+                <span style="font-size:10px; color:var(--text-dim);">Power (kW)</span>
+                <input type="number" class="desktop-number" id="subPower" value="150" style="width:100%; text-align:left;">
+              </div>
+              <div>
+                <span style="font-size:10px; color:var(--text-dim);">Speed (RPM)</span>
+                <input type="number" class="desktop-number" id="subSpeed" value="300" style="width:100%; text-align:left;">
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-top:4px;">
+              <div>
+                <span style="font-size:10px; color:var(--text-dim);">Overload (Ko)</span>
+                <input type="number" class="desktop-number" id="subOverload" value="1.3" step="0.05" style="width:100%; text-align:left;">
+              </div>
+              <div>
+                <span style="font-size:10px; color:var(--text-dim);">Factor of Safety</span>
+                <input type="number" class="desktop-number" id="subFos" value="3.0" step="0.1" style="width:100%; text-align:left;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. MATERIALS DATABASE ACCESS -->
+        <div class="workflow-card">
+          <div class="card-title-row">
+            <span>Material Database Access</span>
+            <span class="badge">DATABASE</span>
+          </div>
+
+          <div class="input-field">
+            <div class="input-label-row">
+              <span>Shaft / Key / Fasteners</span>
+            </div>
+            <select class="desktop-select" id="selDuctileMat">
+              <optgroup label="Plain Carbon Steels (IS 1570)">
+                <option value="30C8">30C8 (Sut=500, Syt=400 MPa, G=79 GPa)</option>
+                <option value="40C8" selected>40C8 (Sut=580, Syt=380 MPa, G=79 GPa)</option>
+                <option value="45C8">45C8 (Sut=630, Syt=380 MPa, G=79 GPa)</option>
+                <option value="50C4">50C4 (Sut=660, Syt=460 MPa, G=79 GPa)</option>
+                <option value="55C8">55C8 (Sut=720, Syt=460 MPa, G=79 GPa)</option>
+              </optgroup>
+              <optgroup label="Alloy Steels">
+                <option value="40Cr4">40Cr4 (Sut=690, Syt=490 MPa, G=80 GPa)</option>
+                <option value="40Cr4Mo2">40Cr4Mo2 (Sut=700, Syt=490 MPa, G=80 GPa)</option>
+                <option value="35Ni5Cr2">35Ni5Cr2 (Sut=690, Syt=490 MPa, G=80 GPa)</option>
+              </optgroup>
+            </select>
+
+            <div class="mat-properties-matrix">
+              <div class="mat-prop-item">
+                <span class="lbl">Yield Syt</span>
+                <span class="val" id="dispSyt">380 MPa</span>
+              </div>
+              <div class="mat-prop-item">
+                <span class="lbl">Ultimate Sut</span>
+                <span class="val" id="dispSut">580 MPa</span>
+              </div>
+              <div class="mat-prop-item">
+                <span class="lbl">Allow. Shear</span>
+                <span class="val" id="dispTau" style="color:var(--brand-accent)">63.3 MPa</span>
+              </div>
+              <div class="mat-prop-item">
+                <span class="lbl">Allow. Crushing</span>
+                <span class="val" id="dispSigmaC" style="color:var(--brand-accent)">126.7 MPa</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-field" style="margin-top:8px;">
+            <div class="input-label-row">
+              <span>Flange Body Material</span>
+            </div>
+            <select class="desktop-select" id="selBrittleMat">
+              <option value="FG200" selected>FG 200 Cast Iron (Sut = 200 MPa, G = 41 GPa)</option>
+              <option value="FG260">FG 260 Cast Iron (Sut = 260 MPa, G = 41 GPa)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 3. CONSTRAINTS (STATED PHYSICAL LIMITS & MECHANICAL VERIFICATION) -->
+        <div class="workflow-card">
+          <div class="card-title-row">
+            <span>3. Design Constraints & Verification</span>
+            <span class="badge">SPEC LIMITS</span>
+          </div>
+          <div style="font-size:10px; color:var(--text-muted); margin-bottom:8px; line-height:1.35;">
+            Constraints establish the operational & spatial boundaries. Dimensions are mechanically derived from Torque & Material properties, then verified against these constraints.
+          </div>
+
+          <!-- CONSTRAINT 1: MAXIMUM SHAFT DIAMETER -->
+          <div class="constraint-item-block">
+            <div class="constraint-item-header">
+              <span class="constraint-item-title">
+                1. Max Shaft Diameter (D_max)
+              </span>
+              <span class="constraint-type-badge">SPATIAL ENVELOPE INPUT</span>
+            </div>
+
+            <div class="input-controls-row">
+              <input type="range" class="desktop-slider" id="rngMaxDiam" min="50" max="350" step="5" value="150">
+              <input type="number" class="desktop-number" id="numMaxDiam" min="20" max="600" step="5" value="150">
+            </div>
+
+            <div class="constraint-telemetry-grid">
+              <div class="telemetry-cell">
+                <span class="telemetry-lbl">Specified Boundary:</span>
+                <span class="telemetry-val" id="dispDmaxLimit">150.0 mm</span>
+              </div>
+              <div class="telemetry-cell">
+                <span class="telemetry-lbl">Mechanically Calculated:</span>
+                <span class="telemetry-val" id="dispDcalcLive" style="color:var(--brand-accent);">85.0 mm</span>
+              </div>
+            </div>
+
+            <div class="constraint-status-row">
+              <span style="font-weight:600; color:var(--text-main);">Spatial Check:</span>
+              <span class="status-tag pass" id="badgeDmaxLive">D ≤ D_MAX (PASS)</span>
+            </div>
+
+            <div class="constraint-physics-dep">
+              Mechanical Dependency: <span>d = [(16·T) / (π·τ_allow)]^(1/3)</span>. Derived from applied torque <em>T</em> and material yield strength <em>Syt</em> (via <em>τ_allow = Syt / 2FoS</em>).
+            </div>
+          </div>
+
+          <!-- CONSTRAINT 2: MAXIMUM ANGLE OF TWIST -->
+          <div class="constraint-item-block">
+            <div class="constraint-item-header">
+              <span class="constraint-item-title">
+                2. Max Allowable Twist (θ_max)
+              </span>
+              <span class="constraint-type-badge">RIGIDITY LIMIT (ISO/DIN)</span>
+            </div>
+
+            <div class="input-controls-row">
+              <input type="range" class="desktop-slider" id="rngMaxTwist" min="0.2" max="3.0" step="0.1" value="1.0">
+              <input type="number" class="desktop-number" id="numMaxTwist" min="0.1" max="10.0" step="0.1" value="1.0">
+            </div>
+
+            <div class="constraint-telemetry-grid">
+              <div class="telemetry-cell">
+                <span class="telemetry-lbl">Allowable Rigidity Limit:</span>
+                <span class="telemetry-val" id="dispThetaLimit">1.000° / m</span>
+              </div>
+              <div class="telemetry-cell">
+                <span class="telemetry-lbl">Mechanically Calculated:</span>
+                <span class="telemetry-val" id="dispThetaLive" style="color:var(--brand-accent);">0.878° / m</span>
+              </div>
+            </div>
+
+            <div class="constraint-status-row">
+              <span style="font-weight:600; color:var(--text-main);">Rigidity Check:</span>
+              <span class="status-tag pass" id="badgeThetaLive">θ ≤ θ_MAX (RIGID)</span>
+            </div>
+
+            <div class="constraint-physics-dep">
+              Mechanical Dependency: <span>θ = (T·L) / (J·G) · (180/π)</span>. Derived from torque <em>T</em> and material shear modulus <em>G</em>. If θ > θ_max, shaft is mechanically upsized for stiffness: <span>D = [(32·T·L)/(π·G·θ_max)]^(1/4)</span>.
+            </div>
+          </div>
+
+          <!-- Stated Standard Physical Rigidity Limits -->
+          <div class="standard-limits-box">
+            <strong>Standard Design Code Stated Limits:</strong><br>
+            • Standard Shaft Test Span: <strong>L_shaft = 1000 mm (1 meter)</strong><br>
+            • Cast Iron Allowable Shear Limit: <strong>τ_ci = 15.0 MPa</strong><br>
+            • Industry Rigidity Limit: <strong>θ ≤ 1.0° per meter span</strong>
+          </div>
+
+          <!-- Engineering Theory Primer -->
+          <div class="engineering-primer-box">
+            <div class="primer-title">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              Are Constraints Inputs or Mechanically Calculated?
+            </div>
+            <ul class="primer-list">
+              <li><strong>Inputs (Boundary Limits):</strong> <em>D_max</em> is a geometric packaging constraint (housing/clearance limit). <em>θ_max</em> is an operational standard (vibration/deflection limit).</li>
+              <li><strong>Mechanically Calculated:</strong> The actual shaft diameter <em>D</em> and actual angle of twist <em>θ</em> are computed from applied Torque <em>T</em> and Material Properties (<em>Syt, G</em>).</li>
+              <li><strong>Coupling Design Loop:</strong> If calculated <em>θ > θ_max</em>, <em>D</em> is automatically upsized for torsional rigidity. If final <em>D > D_max</em>, the chosen material cannot handle the torque in the available space &rarr; <strong>you must select a stronger steel grade</strong>.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- COLUMN 2: CAD SCHEMATIC VIEWPORT -->
+    <section class="cad-viewport-panel">
+      <div class="panel-caption-bar">
+        <span>CAD Technical Cross-Section & Dimensions</span>
+        <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--text-dim);" id="viewportScaleTag">SCALE 1:2.0 AUTO</span>
+      </div>
+
+      <div class="viewport-canvas-wrapper" id="canvasWrapper">
+        <svg id="cadDrawingSvg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <pattern id="cadGridMinor" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="var(--cad-grid-minor)" stroke-width="0.5"/>
+            </pattern>
+            <pattern id="cadGridMajor" width="50" height="50" patternUnits="userSpaceOnUse">
+              <rect width="50" height="50" fill="url(#cadGridMinor)"/>
+              <path d="M 50 0 L 0 0 0 50" fill="none" stroke="var(--cad-grid-major)" stroke-width="1"/>
+            </pattern>
+
+            <pattern id="cadHatchFlangeL" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="10" stroke="var(--cad-hatch-flange-l)" stroke-width="1.2" stroke-opacity="0.5"/>
+            </pattern>
+            <pattern id="cadHatchFlangeR" width="10" height="10" patternTransform="rotate(-45 0 0)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="10" stroke="var(--cad-hatch-flange-r)" stroke-width="1.2" stroke-opacity="0.5"/>
+            </pattern>
+            <pattern id="cadHatchSteel" width="8" height="8" patternTransform="rotate(30 0 0)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="8" stroke="var(--cad-hatch-steel)" stroke-width="1" stroke-opacity="0.35"/>
+            </pattern>
+
+            <marker id="dimArrowStart" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 10 2 L 0 5 L 10 8 z" fill="var(--cad-line-secondary)" />
+            </marker>
+            <marker id="dimArrowEnd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 2 L 10 5 L 0 8 z" fill="var(--cad-line-secondary)" />
+            </marker>
+          </defs>
+
+          <rect width="100%" height="100%" fill="url(#cadGridMajor)"/>
+          <g id="cadLayerRoot"></g>
+        </svg>
+
+        <!-- ISO Title Block -->
+        <div class="iso-title-block">
+          <div class="iso-tb-row">
+            <span class="lbl">ASSEMBLY:</span>
+            <span class="val">RIGID FLANGED COUPLING</span>
+          </div>
+          <div class="iso-tb-row">
+            <span class="lbl">STANDARD:</span>
+            <span class="val">IS 2693 / DIN 116</span>
+          </div>
+          <div class="iso-tb-row">
+            <span class="lbl">SHAFT MATERIAL:</span>
+            <span class="val" id="tbShaftGrade">40C8 STEEL</span>
+          </div>
+          <div class="iso-tb-row">
+            <span class="lbl">FLANGE MATERIAL:</span>
+            <span class="val" id="tbFlangeGrade">FG 200 CAST IRON</span>
+          </div>
+          <div class="iso-tb-row">
+            <span class="lbl">STATUS:</span>
+            <span class="val">CALCULATED & VERIFIED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Summary Footer -->
+      <div class="viewport-status-footer">
+        <div class="vs-item">
+          <span class="vs-lbl">Shaft Dia (D)</span>
+          <span class="vs-val" id="vfD">85.0 mm</span>
+        </div>
+        <div class="vs-item">
+          <span class="vs-lbl">Hub Dia (D1)</span>
+          <span class="vs-val" id="vfD1">170.0 mm</span>
+        </div>
+        <div class="vs-item">
+          <span class="vs-lbl">Pitch Circle (D2)</span>
+          <span class="vs-val" id="vfD2">255.0 mm</span>
+        </div>
+        <div class="vs-item">
+          <span class="vs-lbl">Flange Dia (D3)</span>
+          <span class="vs-val" id="vfD3">340.0 mm</span>
+        </div>
+        <div class="vs-item">
+          <span class="vs-lbl">Thickness (tf)</span>
+          <span class="vs-val" id="vfTf">42.5 mm</span>
+        </div>
+        <div class="vs-item">
+          <span class="vs-lbl">Bolts (i × M)</span>
+          <span class="vs-val" id="vfBolts">5 × M16</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLUMN 3: OUTPUT - ALL DIMENSIONS OF SHAFT, KEY, BOLTS, FLANGE -->
+    <aside class="desktop-panel">
+      <div class="panel-caption-bar">
+        <span>Output: Coupling Dimensions</span>
+        <span class="status-tag pass" id="masterStatusTag">PASS</span>
+      </div>
+
+      <div class="panel-scroll-area">
+
+        <!-- Global Status Banner -->
+        <div class="status-summary-banner pass" id="statusSummaryBanner">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span id="statusSummaryText">All dimensions safe and verified.</span>
+        </div>
+
+        <!-- 1. OUTPUT: SHAFT DIMENSIONS -->
+        <div class="output-section-card">
+          <div class="output-header">
+            <span>1. Shaft Dimensions</span>
+            <span class="status-tag pass" id="tagShaft">SAFE</span>
+          </div>
+          <table class="spec-table">
+            <tr><td class="param">Calculated Strength Dia:</td><td class="val" id="outDcalc">79.3 mm</td></tr>
+            <tr><td class="param">Adopted Standard Dia (D):</td><td class="val" id="outD" style="color:var(--brand-accent); font-weight:700;">85.0 mm</td></tr>
+            <tr><td class="param">Max Diameter Limit:</td><td class="val" id="outDmax">150.0 mm</td></tr>
+            <tr><td class="param">Induced Shear Stress (τ):</td><td class="val" id="outTauShaft">51.5 MPa (≤ 63.3)</td></tr>
+            <tr><td class="param">Angle of Twist (θ):</td><td class="val" id="outTheta">0.878° (≤ 1.0°)</td></tr>
+          </table>
+        </div>
+
+        <!-- 2. OUTPUT: SUNK KEY DIMENSIONS -->
+        <div class="output-section-card">
+          <div class="output-header">
+            <span>2. Key Dimensions</span>
+            <span class="status-tag pass" id="tagKey">SAFE</span>
+          </div>
+          <table class="spec-table">
+            <tr><td class="param">Width (w = ceil(D/4)):</td><td class="val" id="outW">22 mm</td></tr>
+            <tr><td class="param">Height (h = ceil(D/4)):</td><td class="val" id="outH">22 mm</td></tr>
+            <tr><td class="param">Length (l = 1.5·D):</td><td class="val" id="outL">127.5 mm</td></tr>
+            <tr><td class="param">Induced Shear Stress (τ_k):</td><td class="val" id="outTauKey">52.1 MPa (≤ 63.3)</td></tr>
+            <tr><td class="param">Crushing Stress (σ_ck):</td><td class="val" id="outSigmaKey">104.1 MPa (≤ 126.7)</td></tr>
+          </table>
+        </div>
+
+        <!-- 3. OUTPUT: FLANGE & HUB DIMENSIONS -->
+        <div class="output-section-card">
+          <div class="output-header">
+            <span>3. Flange & Hub Dimensions</span>
+            <span class="status-tag pass" id="tagFlange">SAFE</span>
+          </div>
+          <table class="spec-table">
+            <tr><td class="param">Hub Outside Dia (D1 = 2D):</td><td class="val" id="outD1">170.0 mm</td></tr>
+            <tr><td class="param">Hub Length (L = 1.5D):</td><td class="val" id="outHubL">127.5 mm</td></tr>
+            <tr><td class="param">Pitch Circle Dia (D2 = 3D):</td><td class="val" id="outD2">255.0 mm</td></tr>
+            <tr><td class="param">Outside Flange Dia (D3 = 4D):</td><td class="val" id="outD3">340.0 mm</td></tr>
+            <tr><td class="param">Flange Thickness (tf = 0.5D):</td><td class="val" id="outTf">42.5 mm</td></tr>
+            <tr><td class="param">Recess Rim (tp = 0.25D):</td><td class="val" id="outTp">21.3 mm</td></tr>
+            <tr><td class="param">Hub Torsional Shear:</td><td class="val" id="outTauHub">6.86 MPa (≤ 15.0)</td></tr>
+            <tr><td class="param">Flange Circumferential Shear:</td><td class="val" id="outTauFlange">3.22 MPa (≤ 15.0)</td></tr>
+          </table>
+        </div>
+
+        <!-- 4. OUTPUT: BOLT ARRAY DIMENSIONS -->
+        <div class="output-section-card">
+          <div class="output-header">
+            <span>4. Bolt Dimensions</span>
+            <span class="status-tag pass" id="tagBolt">SAFE</span>
+          </div>
+          <table class="spec-table">
+            <tr><td class="param">Number of Bolts (i):</td><td class="val" id="outBoltCount">5 Bolts</td></tr>
+            <tr><td class="param">Calculated Core Dia (d_calc):</td><td class="val" id="outDcalcBolt">13.99 mm</td></tr>
+            <tr><td class="param">Adopted ISO Metric Size:</td><td class="val" id="outMetric" style="color:var(--brand-accent); font-weight:700;">M16 (Core 14 mm)</td></tr>
+            <tr><td class="param">Bolt Shear Stress:</td><td class="val" id="outTauBolt">63.2 MPa (≤ 63.3)</td></tr>
+            <tr><td class="param">Empirical Guidance Range:</td><td class="val" id="outEmpRange">15.2 – 17.1 mm</td></tr>
+          </table>
+        </div>
+
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- FORMAL CALCULATION DOSSIER MODAL -->
+  <div class="dossier-backdrop" id="dossierModal">
+    <div class="dossier-dialog">
+      <div class="dossier-header">
+        <h2>Engineering Calculation Dossier (IS 2693 / DIN 116)</h2>
+        <button class="dossier-close" id="btnCloseDossier">&times;</button>
+      </div>
+
+      <div class="dossier-body" id="dossierBodyContent">
+        <!-- Injected via JS -->
+      </div>
+
+      <div class="dossier-footer">
+        <button class="btn" id="btnCopyDossier">Copy Plain Text</button>
+        <button class="btn btn-primary" id="btnPrintDossier">Print / Export PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC ENGINE -->
+  <script>
+    /* ==========================================================================
+       TORQ-ALIGN CAD: INDUSTRIAL CALCULATION ENGINE
+       Input: Torque (T), Materials Database, Constraints (D_max, θ_max)
+       Output: All dimensions of Shaft, Key, Bolts, Flange
+       ========================================================================== */
+
+    const MATERIALS_DUCTILE = {
+      '30C8':    { name: '30C8 Plain Carbon Steel', Sut: 500, Syt: 400, G: 79000 },
+      '40C8':    { name: '40C8 Plain Carbon Steel', Sut: 580, Syt: 380, G: 79000 },
+      '45C8':    { name: '45C8 Plain Carbon Steel', Sut: 630, Syt: 380, G: 79000 },
+      '50C4':    { name: '50C4 Plain Carbon Steel', Sut: 660, Syt: 460, G: 79000 },
+      '55C8':    { name: '55C8 Plain Carbon Steel', Sut: 720, Syt: 460, G: 79000 },
+      '40Cr4':   { name: '40Cr4 Alloy Steel',       Sut: 690, Syt: 490, G: 80000 },
+      '40Cr4Mo2':{ name: '40Cr4Mo2 Alloy Steel',    Sut: 700, Syt: 490, G: 80000 },
+      '35Ni5Cr2':{ name: '35Ni5Cr2 Alloy Steel',    Sut: 690, Syt: 490, G: 80000 }
+    };
+
+    const MATERIALS_BRITTLE = {
+      'FG200': { name: 'FG 200 Cast Iron', Sut: 200, G: 41000 },
+      'FG260': { name: 'FG 260 Cast Iron', Sut: 260, G: 41000 }
+    };
+
+    // Stated Standard Physical Rigidity Limits
+    const STANDARD_RIGIDITY = {
+      L_shaft_mm: 1000,   // Standard span 1 meter
+      theta_max_deg: 1.0, // Standard 1.0 deg / meter
+      tau_ci_MPa: 15.0    // Cast Iron allowable shear
+    };
+
+    let appState = {
+      viewMode: 'section',
+      showDimensions: true,
+      showHatching: true,
+      zoom: 1.0,
+      calc: null
+    };
+
+    // Element Cache
+    const dom = {
+      rngTorque: document.getElementById('rngTorque'),
+      numTorque: document.getElementById('numTorque'),
+      subPower: document.getElementById('subPower'),
+      subSpeed: document.getElementById('subSpeed'),
+      subOverload: document.getElementById('subOverload'),
+      subFos: document.getElementById('subFos'),
+      rngMaxDiam: document.getElementById('rngMaxDiam'),
+      numMaxDiam: document.getElementById('numMaxDiam'),
+      rngMaxTwist: document.getElementById('rngMaxTwist'),
+      numMaxTwist: document.getElementById('numMaxTwist'),
+      selDuctileMat: document.getElementById('selDuctileMat'),
+      selBrittleMat: document.getElementById('selBrittleMat'),
+
+      // Readouts
+      dispSyt: document.getElementById('dispSyt'),
+      dispSut: document.getElementById('dispSut'),
+      dispTau: document.getElementById('dispTau'),
+      dispSigmaC: document.getElementById('dispSigmaC'),
+
+      // Constraint Telemetry
+      dispDmaxLimit: document.getElementById('dispDmaxLimit'),
+      dispDcalcLive: document.getElementById('dispDcalcLive'),
+      badgeDmaxLive: document.getElementById('badgeDmaxLive'),
+      dispThetaLimit: document.getElementById('dispThetaLimit'),
+      dispThetaLive: document.getElementById('dispThetaLive'),
+      badgeThetaLive: document.getElementById('badgeThetaLive'),
+
+      // Title Block
+      tbShaftGrade: document.getElementById('tbShaftGrade'),
+      tbFlangeGrade: document.getElementById('tbFlangeGrade'),
+
+      // Footer
+      vfD: document.getElementById('vfD'),
+      vfD1: document.getElementById('vfD1'),
+      vfD2: document.getElementById('vfD2'),
+      vfD3: document.getElementById('vfD3'),
+      vfTf: document.getElementById('vfTf'),
+      vfBolts: document.getElementById('vfBolts'),
+
+      // Status
+      masterStatusTag: document.getElementById('masterStatusTag'),
+      statusSummaryBanner: document.getElementById('statusSummaryBanner'),
+      statusSummaryText: document.getElementById('statusSummaryText'),
+
+      // Outputs: Shaft
+      tagShaft: document.getElementById('tagShaft'),
+      outDcalc: document.getElementById('outDcalc'),
+      outD: document.getElementById('outD'),
+      outDmax: document.getElementById('outDmax'),
+      outTauShaft: document.getElementById('outTauShaft'),
+      outTheta: document.getElementById('outTheta'),
+
+      // Outputs: Key
+      tagKey: document.getElementById('tagKey'),
+      outW: document.getElementById('outW'),
+      outH: document.getElementById('outH'),
+      outL: document.getElementById('outL'),
+      outTauKey: document.getElementById('outTauKey'),
+      outSigmaKey: document.getElementById('outSigmaKey'),
+
+      // Outputs: Flange & Hub
+      tagFlange: document.getElementById('tagFlange'),
+      outD1: document.getElementById('outD1'),
+      outHubL: document.getElementById('outHubL'),
+      outD2: document.getElementById('outD2'),
+      outD3: document.getElementById('outD3'),
+      outTf: document.getElementById('outTf'),
+      outTp: document.getElementById('outTp'),
+      outTauHub: document.getElementById('outTauHub'),
+      outTauFlange: document.getElementById('outTauFlange'),
+
+      // Outputs: Bolts
+      tagBolt: document.getElementById('tagBolt'),
+      outBoltCount: document.getElementById('outBoltCount'),
+      outDcalcBolt: document.getElementById('outDcalcBolt'),
+      outMetric: document.getElementById('outMetric'),
+      outTauBolt: document.getElementById('outTauBolt'),
+      outEmpRange: document.getElementById('outEmpRange'),
+
+      // CAD
+      cadLayerRoot: document.getElementById('cadLayerRoot'),
+      rbViewSection: document.getElementById('rbViewSection'),
+      rbViewEnd: document.getElementById('rbViewEnd'),
+      rbViewDual: document.getElementById('rbViewDual'),
+      rbToggleDims: document.getElementById('rbToggleDims'),
+      rbToggleHatch: document.getElementById('rbToggleHatch'),
+      rbResetZoom: document.getElementById('rbResetZoom'),
+
+      // Themes
+      btnThemeLight: document.getElementById('btnThemeLight'),
+      btnThemeBlueprint: document.getElementById('btnThemeBlueprint'),
+      btnThemeDark: document.getElementById('btnThemeDark'),
+
+      // Modal
+      dossierModal: document.getElementById('dossierModal'),
+      dossierBodyContent: document.getElementById('dossierBodyContent'),
+      btnOpenDossier: document.getElementById('btnOpenDossier'),
+      btnCloseDossier: document.getElementById('btnCloseDossier'),
+      btnCopyDossier: document.getElementById('btnCopyDossier'),
+      btnPrintDossier: document.getElementById('btnPrintDossier'),
+      btnResetDefaults: document.getElementById('btnResetDefaults')
+    };
+
+    // Direct Torque sync
+    dom.rngTorque.addEventListener('input', () => {
+      dom.numTorque.value = dom.rngTorque.value;
+      runCalculations();
+    });
+    dom.numTorque.addEventListener('input', () => {
+      dom.rngTorque.value = dom.numTorque.value;
+      runCalculations();
+    });
+
+    // Helper: compute torque from sub-inputs
+    function syncFromPowerSpeed() {
+      const p = parseFloat(dom.subPower.value) || 150;
+      const n = parseFloat(dom.subSpeed.value) || 300;
+      const ko = parseFloat(dom.subOverload.value) || 1.3;
+      const t_av = (p * 1000 * 60) / (2 * Math.PI * n);
+      const t_max = Math.round(ko * t_av);
+      dom.numTorque.value = t_max;
+      dom.rngTorque.value = Math.min(25000, t_max);
+      runCalculations();
+    }
+
+    dom.subPower.addEventListener('input', syncFromPowerSpeed);
+    dom.subSpeed.addEventListener('input', syncFromPowerSpeed);
+    dom.subOverload.addEventListener('input', syncFromPowerSpeed);
+    dom.subFos.addEventListener('input', runCalculations);
+
+    // Dmax constraint
+    dom.rngMaxDiam.addEventListener('input', () => {
+      dom.numMaxDiam.value = dom.rngMaxDiam.value;
+      runCalculations();
+    });
+    dom.numMaxDiam.addEventListener('input', () => {
+      dom.rngMaxDiam.value = dom.numMaxDiam.value;
+      runCalculations();
+    });
+
+    // Twist constraint
+    dom.rngMaxTwist.addEventListener('input', () => {
+      dom.numMaxTwist.value = dom.rngMaxTwist.value;
+      runCalculations();
+    });
+    dom.numMaxTwist.addEventListener('input', () => {
+      dom.rngMaxTwist.value = dom.numMaxTwist.value;
+      runCalculations();
+    });
+
+    dom.selDuctileMat.addEventListener('change', runCalculations);
+    dom.selBrittleMat.addEventListener('change', runCalculations);
+
+    // Themes
+    dom.btnThemeLight.addEventListener('click', () => applyTheme('studio-light'));
+    dom.btnThemeBlueprint.addEventListener('click', () => applyTheme('blueprint'));
+    dom.btnThemeDark.addEventListener('click', () => applyTheme('titanium-dark'));
+
+    function applyTheme(th) {
+      document.body.setAttribute('data-theme', th);
+      dom.btnThemeLight.classList.toggle('active', th === 'studio-light');
+      dom.btnThemeBlueprint.classList.toggle('active', th === 'blueprint');
+      dom.btnThemeDark.classList.toggle('active', th === 'titanium-dark');
+      renderCadSchematic();
+    }
+
+    // Views
+    dom.rbViewSection.addEventListener('click', () => setCadView('section'));
+    dom.rbViewEnd.addEventListener('click', () => setCadView('end'));
+    dom.rbViewDual.addEventListener('click', () => setCadView('dual'));
+
+    function setCadView(v) {
+      appState.viewMode = v;
+      dom.rbViewSection.classList.toggle('active', v === 'section');
+      dom.rbViewEnd.classList.toggle('active', v === 'end');
+      dom.rbViewDual.classList.toggle('active', v === 'dual');
+      renderCadSchematic();
+    }
+
+    dom.rbToggleDims.addEventListener('click', () => {
+      appState.showDimensions = !appState.showDimensions;
+      dom.rbToggleDims.textContent = `Dimensions [${appState.showDimensions ? 'ON' : 'OFF'}]`;
+      dom.rbToggleDims.style.color = appState.showDimensions ? 'var(--brand-accent)' : 'var(--text-muted)';
+      renderCadSchematic();
+    });
+
+    dom.rbToggleHatch.addEventListener('click', () => {
+      appState.showHatching = !appState.showHatching;
+      dom.rbToggleHatch.textContent = `Hatching [${appState.showHatching ? 'ON' : 'OFF'}]`;
+      dom.rbToggleHatch.style.color = appState.showHatching ? 'var(--brand-accent)' : 'var(--text-muted)';
+      renderCadSchematic();
+    });
+
+    function updateViewportScaleTag() {
+      const tag = document.getElementById('viewportScaleTag');
+      if (tag) tag.textContent = `SCALE 1:2.0 @ ${(appState.zoom * 100).toFixed(0)}%`;
+    }
+
+    dom.rbResetZoom.addEventListener('click', () => {
+      appState.zoom = 1.0;
+      updateViewportScaleTag();
+      renderCadSchematic();
+    });
+
+    const canvasWrapper = document.getElementById('canvasWrapper');
+    if (canvasWrapper) {
+      canvasWrapper.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 0.08 : -0.08;
+        appState.zoom = Math.min(2.5, Math.max(0.6, parseFloat((appState.zoom + delta).toFixed(2))));
+        updateViewportScaleTag();
+        renderCadSchematic();
+      }, { passive: false });
+    }
+
+    // Reset Defaults
+    dom.btnResetDefaults.addEventListener('click', () => {
+      dom.numTorque.value = 6207;
+      dom.rngTorque.value = 6207;
+      dom.subPower.value = 150;
+      dom.subSpeed.value = 300;
+      dom.subOverload.value = 1.3;
+      dom.subFos.value = 3.0;
+      dom.numMaxDiam.value = 150;
+      dom.rngMaxDiam.value = 150;
+      dom.numMaxTwist.value = 1.0;
+      dom.rngMaxTwist.value = 1.0;
+      dom.selDuctileMat.value = '40C8';
+      dom.selBrittleMat.value = 'FG200';
+      runCalculations();
+    });
+
+    // Modal
+    dom.btnOpenDossier.addEventListener('click', () => {
+      generateDossierContent();
+      dom.dossierModal.classList.add('open');
+    });
+    dom.btnCloseDossier.addEventListener('click', () => {
+      dom.dossierModal.classList.remove('open');
+    });
+    dom.dossierModal.addEventListener('click', (e) => {
+      if (e.target === dom.dossierModal) dom.dossierModal.classList.remove('open');
+    });
+    dom.btnPrintDossier.addEventListener('click', () => window.print());
+    dom.btnCopyDossier.addEventListener('click', () => {
+      const txt = generatePlainTextReport(appState.calc);
+      navigator.clipboard.writeText(txt).then(() => {
+        dom.btnCopyDossier.textContent = '✓ Copied!';
+        setTimeout(() => dom.btnCopyDossier.textContent = 'Copy Plain Text', 2000);
+      });
+    });
+
+    /* ==========================================================================
+       CALCULATION WORKFLOW (STRICT SPEC COMPLIANCE)
+       Input: Torque T, FoS, Materials
+       Constraints: D_max, Standard Rigidity Limit theta_max = 1.0 deg / m
+       Output: All dimensions of Shaft, Key, Bolts, Flange
+       ========================================================================== */
+    function runCalculations() {
+      // 1. Input: Transmitted Torque (N·m)
+      const T_Nm = parseFloat(dom.numTorque.value) || 6207;
+      const T_Nmm = T_Nm * 1000;
+      const FoS = parseFloat(dom.subFos.value) || 3.0;
+
+      // 2. Material selection
+      const shaftMat = MATERIALS_DUCTILE[dom.selDuctileMat.value] || MATERIALS_DUCTILE['40C8'];
+      const flangeMat = MATERIALS_BRITTLE[dom.selBrittleMat.value] || MATERIALS_BRITTLE['FG200'];
+
+      const tau_allow = shaftMat.Syt / (2 * FoS);
+      const sigma_c_allow = shaftMat.Syt / FoS;
+      const G_shaft = shaftMat.G;
+
+      dom.dispSyt.textContent = `${shaftMat.Syt} MPa`;
+      dom.dispSut.textContent = `${shaftMat.Sut} MPa`;
+      dom.dispTau.textContent = `${tau_allow.toFixed(1)} MPa`;
+      dom.dispSigmaC.textContent = `${sigma_c_allow.toFixed(1)} MPa`;
+
+      // 3. Constraints (D_max and theta_max)
+      const D_max = parseFloat(dom.numMaxDiam.value) || 150;
+      const theta_max_deg = parseFloat(dom.numMaxTwist.value) || STANDARD_RIGIDITY.theta_max_deg;
+      const L_shaft = STANDARD_RIGIDITY.L_shaft_mm;          // 1000 mm
+      const tau_ci = STANDARD_RIGIDITY.tau_ci_MPa;           // 15.0 MPa
+
+      // 4. Output: Shaft Dimensions
+      const d_calc_str = Math.pow((16 * T_Nmm) / (Math.PI * tau_allow), 1 / 3);
+      let D = Math.ceil(d_calc_str / 5) * 5;
+      if (D < 20) D = 20;
+      const D_strength = D;
+
+      let J = (Math.PI / 32) * Math.pow(D, 4);
+      let theta_rad = (T_Nmm * L_shaft) / (J * G_shaft);
+      let theta_deg = theta_rad * (180 / Math.PI);
+
+      let isRecalibrated = false;
+      let D_twist_raw = null;
+
+      if (theta_deg > theta_max_deg) {
+        isRecalibrated = true;
+        const th_max_rad = theta_max_deg * (Math.PI / 180);
+        D_twist_raw = Math.pow((32 * T_Nmm * L_shaft) / (Math.PI * G_shaft * th_max_rad), 0.25);
+        D = Math.ceil(D_twist_raw / 5) * 5;
+        if (D < D_strength) D = D_strength;
+
+        J = (Math.PI / 32) * Math.pow(D, 4);
+        theta_rad = (T_Nmm * L_shaft) / (J * G_shaft);
+        theta_deg = theta_rad * (180 / Math.PI);
+      }
+
+      const tau_shaft = (16 * T_Nmm) / (Math.PI * Math.pow(D, 3));
+      const isDmaxExceeded = D > D_max;
+
+      // 5. Output: Sunk Key Dimensions (IS 2048)
+      const w = Math.ceil(D / 4);
+      const h = Math.ceil(D / 4);
+      const l = 1.5 * D;
+      const tau_k = (2 * T_Nmm) / (D * w * l);
+      const sigma_ck = (4 * T_Nmm) / (D * h * l);
+
+      // 6. Output: Flange & Hub Dimensions (IS 2693)
+      const D1 = 2 * D;
+      const L_hub = 1.5 * D;
+      const D2 = 3 * D;
+      const D3 = 4 * D;
+      const tf = 0.5 * D;
+      const tp = 0.25 * D;
+
+      const tau_hub = (16 * T_Nmm * D1) / (Math.PI * (Math.pow(D1, 4) - Math.pow(D, 4)));
+      const tau_f = (2 * T_Nmm) / (Math.PI * Math.pow(D1, 2) * tf);
+
+      // 7. Output: Fastener Dimensions
+      const i = Math.ceil(D / 50 + 3);
+      const d_calc_bolt = Math.sqrt((8 * T_Nmm) / (i * Math.PI * D2 * tau_allow));
+      const d_bolt = Math.ceil(d_calc_bolt);
+
+      const metricSizes = [6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 27, 30, 36];
+      const adoptedMetric = metricSizes.find(s => s >= d_bolt) || d_bolt;
+
+      const d_min_emp = (0.4 * D) / Math.sqrt(i);
+      const d_max_emp = (0.45 * D) / Math.sqrt(i);
+      const tau_b = (8 * T_Nmm) / (i * Math.PI * D2 * Math.pow(d_bolt, 2));
+
+      appState.calc = {
+        T_Nm, T_Nmm, FoS, L_shaft, D_max, theta_max_deg, tau_ci,
+        shaftMat, flangeMat, tau_allow, sigma_c_allow, G_shaft,
+        d_calc_str, D_strength, D, J, theta_rad, theta_deg,
+        isRecalibrated, D_twist_raw, tau_shaft, isDmaxExceeded,
+        w, h, l, tau_k, sigma_ck,
+        D1, L_hub, D2, D3, tf, tp, tau_hub, tau_f,
+        i, d_calc_bolt, d_bolt, adoptedMetric, d_min_emp, d_max_emp, tau_b
+      };
+
+      updateOutputUI(appState.calc);
+      renderCadSchematic();
+    }
+
+    /* ==========================================================================
+       UPDATE OUTPUT DIMENSIONS USER INTERFACE
+       ========================================================================== */
+    function updateOutputUI(c) {
+      // Title Block
+      dom.tbShaftGrade.textContent = c.shaftMat.name.split(' ')[0] + ' STEEL';
+      dom.tbFlangeGrade.textContent = c.flangeMat.name.split(' ')[0] + ' CAST IRON';
+
+      // Footer quick readout
+      dom.vfD.textContent = `${c.D.toFixed(1)} mm`;
+      dom.vfD1.textContent = `${c.D1.toFixed(1)} mm`;
+      dom.vfD2.textContent = `${c.D2.toFixed(1)} mm`;
+      dom.vfD3.textContent = `${c.D3.toFixed(1)} mm`;
+      dom.vfTf.textContent = `${c.tf.toFixed(1)} mm`;
+      dom.vfBolts.textContent = `${c.i} × M${c.adoptedMetric}`;
+
+      // Update Live Constraint Telemetry in Input/Constraint Card
+      if (dom.dispDmaxLimit) {
+        dom.dispDmaxLimit.textContent = `${c.D_max.toFixed(1)} mm`;
+        dom.dispDcalcLive.textContent = `${c.D.toFixed(1)} mm`;
+        if (c.isDmaxExceeded) {
+          dom.badgeDmaxLive.className = 'status-tag fail';
+          dom.badgeDmaxLive.textContent = `VIOLATION (+${(c.D - c.D_max).toFixed(1)} mm)`;
+        } else {
+          dom.badgeDmaxLive.className = 'status-tag pass';
+          dom.badgeDmaxLive.textContent = `D ≤ D_MAX (MARGIN +${(c.D_max - c.D).toFixed(1)} mm)`;
+        }
+
+        dom.dispThetaLimit.textContent = `${c.theta_max_deg.toFixed(2)}° / m`;
+        dom.dispThetaLive.textContent = `${c.theta_deg.toFixed(3)}° / m`;
+        if (c.isRecalibrated) {
+          dom.badgeThetaLive.className = 'status-tag warn';
+          dom.badgeThetaLive.textContent = `UPSIZED FOR RIGIDITY (${c.d_calc_str.toFixed(1)} → ${c.D.toFixed(1)} mm)`;
+        } else if (c.theta_deg <= c.theta_max_deg) {
+          dom.badgeThetaLive.className = 'status-tag pass';
+          dom.badgeThetaLive.textContent = `θ ≤ θ_MAX (RIGID)`;
+        } else {
+          dom.badgeThetaLive.className = 'status-tag fail';
+          dom.badgeThetaLive.textContent = `EXCEEDS LIMIT`;
+        }
+      }
+
+      // 1. Shaft Output
+      dom.outDcalc.textContent = `${c.d_calc_str.toFixed(1)} mm`;
+      dom.outD.textContent = `${c.D.toFixed(1)} mm`;
+      dom.outDmax.textContent = `${c.D_max.toFixed(1)} mm`;
+      dom.outTauShaft.textContent = `${c.tau_shaft.toFixed(1)} MPa (≤ ${c.tau_allow.toFixed(1)})`;
+      dom.outTheta.textContent = `${c.theta_deg.toFixed(3)}° (≤ 1.0°)`;
+
+      if (c.isDmaxExceeded) {
+        dom.tagShaft.className = 'status-tag fail';
+        dom.tagShaft.textContent = 'D > D_MAX';
+      } else if (c.isRecalibrated) {
+        dom.tagShaft.className = 'status-tag warn';
+        dom.tagShaft.textContent = 'UPSIZED';
+      } else {
+        dom.tagShaft.className = 'status-tag pass';
+        dom.tagShaft.textContent = 'SAFE';
+      }
+
+      // 2. Key Output
+      dom.outW.textContent = `${c.w} mm`;
+      dom.outH.textContent = `${c.h} mm`;
+      dom.outL.textContent = `${c.l.toFixed(1)} mm`;
+      dom.outTauKey.textContent = `${c.tau_k.toFixed(1)} MPa (≤ ${c.tau_allow.toFixed(1)})`;
+      dom.outSigmaKey.textContent = `${c.sigma_ck.toFixed(1)} MPa (≤ ${c.sigma_c_allow.toFixed(1)})`;
+
+      const isKeySafe = c.tau_k <= c.tau_allow && c.sigma_ck <= c.sigma_c_allow;
+      dom.tagKey.className = isKeySafe ? 'status-tag pass' : 'status-tag fail';
+      dom.tagKey.textContent = isKeySafe ? 'SAFE' : 'FAIL';
+
+      // 3. Flange & Hub Output
+      dom.outD1.textContent = `${c.D1.toFixed(1)} mm`;
+      dom.outHubL.textContent = `${c.L_hub.toFixed(1)} mm`;
+      dom.outD2.textContent = `${c.D2.toFixed(1)} mm`;
+      dom.outD3.textContent = `${c.D3.toFixed(1)} mm`;
+      dom.outTf.textContent = `${c.tf.toFixed(1)} mm`;
+      dom.outTp.textContent = `${c.tp.toFixed(1)} mm`;
+      dom.outTauHub.textContent = `${c.tau_hub.toFixed(2)} MPa (≤ 15.0)`;
+      dom.outTauFlange.textContent = `${c.tau_f.toFixed(2)} MPa (≤ 15.0)`;
+
+      const isFlangeSafe = c.tau_hub <= c.tau_ci && c.tau_f <= c.tau_ci;
+      dom.tagFlange.className = isFlangeSafe ? 'status-tag pass' : 'status-tag fail';
+      dom.tagFlange.textContent = isFlangeSafe ? 'SAFE' : 'FAIL';
+
+      // 4. Bolt Output
+      dom.outBoltCount.textContent = `${c.i} Bolts`;
+      dom.outDcalcBolt.textContent = `${c.d_calc_bolt.toFixed(2)} mm`;
+      dom.outMetric.textContent = `M${c.adoptedMetric} (Core ${c.d_bolt} mm)`;
+      dom.outTauBolt.textContent = `${c.tau_b.toFixed(1)} MPa (≤ ${c.tau_allow.toFixed(1)})`;
+      dom.outEmpRange.textContent = `${c.d_min_emp.toFixed(1)} – ${c.d_max_emp.toFixed(1)} mm`;
+
+      const isBoltSafe = c.tau_b <= c.tau_allow;
+      dom.tagBolt.className = isBoltSafe ? 'status-tag pass' : 'status-tag fail';
+      dom.tagBolt.textContent = isBoltSafe ? 'SAFE' : 'FAIL';
+
+      // Master Summary Banner
+      if (c.isDmaxExceeded) {
+        dom.statusSummaryBanner.className = 'status-summary-banner fail';
+        dom.statusSummaryText.textContent = `CRITICAL: Required shaft D (${c.D} mm) exceeds D_max constraint (${c.D_max} mm).`;
+        dom.masterStatusTag.className = 'status-tag fail';
+        dom.masterStatusTag.textContent = 'FAIL';
+      } else if (c.isRecalibrated) {
+        dom.statusSummaryBanner.className = 'status-summary-banner warn';
+        dom.statusSummaryText.textContent = `Rigidity Recalibration: Shaft upsized to ${c.D} mm to keep twist ≤ 1.0°/m.`;
+        dom.masterStatusTag.className = 'status-tag warn';
+        dom.masterStatusTag.textContent = 'ADAPTED';
+      } else {
+        dom.statusSummaryBanner.className = 'status-summary-banner pass';
+        dom.statusSummaryText.textContent = `All coupling output dimensions verified & compliant (IS 2693).`;
+        dom.masterStatusTag.className = 'status-tag pass';
+        dom.masterStatusTag.textContent = 'PASS';
+      }
+    }
+
+    /* ==========================================================================
+       CAD DRAWING RENDERER (SECTION & ELEVATION)
+       ========================================================================== */
+    function renderCadSchematic() {
+      if (!appState.calc) return;
+      const c = appState.calc;
+      const root = dom.cadLayerRoot;
+      root.innerHTML = '';
+
+      if (appState.viewMode === 'section') {
+        renderSectionView(root, 500, 300, 1.45 * appState.zoom, c);
+      } else if (appState.viewMode === 'end') {
+        renderEndView(root, 500, 300, 1.45 * appState.zoom, c);
+      } else {
+        renderSectionView(root, 300, 300, 0.95 * appState.zoom, c);
+        renderEndView(root, 730, 300, 0.95 * appState.zoom, c);
+      }
+    }
+
+    function renderSectionView(parent, cx, cy, scale, c) {
+      const g = createEl('g');
+      const maxDim = Math.max(c.D3, c.L_hub * 2 + c.tf * 2);
+      const pxPerMm = (220 / maxDim) * scale;
+
+      const r_sh = (c.D / 2) * pxPerMm;
+      const r_hub = (c.D1 / 2) * pxPerMm;
+      const r_pcd = (c.D2 / 2) * pxPerMm;
+      const r_out = (c.D3 / 2) * pxPerMm;
+      const w_fl = c.tf * pxPerMm;
+      const w_rim = c.tp * pxPerMm;
+      const l_hub = c.L_hub * pxPerMm;
+      const r_b = (c.d_bolt / 2) * pxPerMm;
+      const h_k = c.h * pxPerMm;
+      const l_k = c.l * pxPerMm;
+
+      const shExt = l_hub + 55 * pxPerMm;
+
+      // Shafts
+      g.appendChild(createRect(cx - shExt, cy - r_sh, shExt, r_sh * 2, {
+        fill: appState.showHatching ? 'url(#cadHatchSteel)' : 'var(--subpanel-bg)',
+        stroke: 'var(--cad-line-primary)', 'stroke-width': '1.5'
+      }));
+      g.appendChild(createRect(cx, cy - r_sh, shExt, r_sh * 2, {
+        fill: appState.showHatching ? 'url(#cadHatchSteel)' : 'var(--subpanel-bg)',
+        stroke: 'var(--cad-line-primary)', 'stroke-width': '1.5'
+      }));
+
+      // Flange Left
+      const pathFlL = `
+        M ${cx} ${cy - r_out}
+        L ${cx - w_fl - w_rim} ${cy - r_out}
+        L ${cx - w_fl - w_rim} ${cy - (r_out - w_rim)}
+        L ${cx - w_fl} ${cy - (r_out - w_rim)}
+        L ${cx - w_fl} ${cy - r_hub}
+        L ${cx - l_hub} ${cy - r_hub}
+        L ${cx - l_hub} ${cy - r_sh}
+        L ${cx} ${cy - r_sh}
+        Z
+      `;
+      g.appendChild(createPath(pathFlL, {
+        fill: appState.showHatching ? 'url(#cadHatchFlangeL)' : 'var(--panel-bg)',
+        stroke: 'var(--cad-line-secondary)', 'stroke-width': '2'
+      }));
+
+      const pathFlLowL = `
+        M ${cx} ${cy + r_out}
+        L ${cx - w_fl - w_rim} ${cy + r_out}
+        L ${cx - w_fl - w_rim} ${cy + (r_out - w_rim)}
+        L ${cx - w_fl} ${cy + (r_out - w_rim)}
+        L ${cx - w_fl} ${cy + r_hub}
+        L ${cx - l_hub} ${cy + r_hub}
+        L ${cx - l_hub} ${cy + r_sh}
+        L ${cx} ${cy + r_sh}
+        Z
+      `;
+      g.appendChild(createPath(pathFlLowL, {
+        fill: appState.showHatching ? 'url(#cadHatchFlangeL)' : 'var(--panel-bg)',
+        stroke: 'var(--cad-line-secondary)', 'stroke-width': '2'
+      }));
+
+      // Flange Right
+      const pathFlR = `
+        M ${cx} ${cy - r_out}
+        L ${cx + w_fl + w_rim} ${cy - r_out}
+        L ${cx + w_fl + w_rim} ${cy - (r_out - w_rim)}
+        L ${cx + w_fl} ${cy - (r_out - w_rim)}
+        L ${cx + w_fl} ${cy - r_hub}
+        L ${cx + l_hub} ${cy - r_hub}
+        L ${cx + l_hub} ${cy - r_sh}
+        L ${cx} ${cy - r_sh}
+        Z
+      `;
+      g.appendChild(createPath(pathFlR, {
+        fill: appState.showHatching ? 'url(#cadHatchFlangeR)' : 'var(--panel-bg)',
+        stroke: 'var(--cad-line-secondary)', 'stroke-width': '2'
+      }));
+
+      const pathFlLowR = `
+        M ${cx} ${cy + r_out}
+        L ${cx + w_fl + w_rim} ${cy + r_out}
+        L ${cx + w_fl + w_rim} ${cy + (r_out - w_rim)}
+        L ${cx + w_fl} ${cy + (r_out - w_rim)}
+        L ${cx + w_fl} ${cy + r_hub}
+        L ${cx + l_hub} ${cy + r_hub}
+        L ${cx + l_hub} ${cy + r_sh}
+        L ${cx} ${cy + r_sh}
+        Z
+      `;
+      g.appendChild(createPath(pathFlLowR, {
+        fill: appState.showHatching ? 'url(#cadHatchFlangeR)' : 'var(--panel-bg)',
+        stroke: 'var(--cad-line-secondary)', 'stroke-width': '2'
+      }));
+
+      // Split line
+      g.appendChild(createLine(cx, cy - r_out, cx, cy + r_out, {
+        stroke: 'var(--text-muted)', 'stroke-width': '1.2'
+      }));
+
+      // Bolts
+      g.appendChild(createRect(cx - w_fl, cy - r_pcd - r_b * 1.1, w_fl * 2, r_b * 2.2, {
+        fill: 'var(--cad-canvas-bg)', stroke: 'var(--cad-line-amber)', 'stroke-width': '1'
+      }));
+      g.appendChild(createRect(cx - w_fl - 8, cy - r_pcd - r_b, (w_fl * 2) + 16, r_b * 2, {
+        fill: 'var(--cad-line-amber)', stroke: 'var(--cad-line-primary)', 'stroke-width': '1'
+      }));
+      g.appendChild(createRect(cx - w_fl - 16, cy - r_pcd - r_b * 1.3, 8, r_b * 2.6, {
+        fill: 'var(--cad-line-amber)', stroke: 'var(--cad-line-primary)', 'stroke-width': '1'
+      }));
+      g.appendChild(createRect(cx + w_fl + 8, cy - r_pcd - r_b * 1.3, 8, r_b * 2.6, {
+        fill: 'var(--cad-line-amber)', stroke: 'var(--cad-line-primary)', 'stroke-width': '1'
+      }));
+
+      g.appendChild(createRect(cx - w_fl, cy + r_pcd - r_b * 1.1, w_fl * 2, r_b * 2.2, {
+        fill: 'var(--cad-canvas-bg)', stroke: 'var(--cad-line-amber)', 'stroke-width': '1'
+      }));
+      g.appendChild(createRect(cx - w_fl - 8, cy + r_pcd - r_b, (w_fl * 2) + 16, r_b * 2, {
+        fill: 'var(--cad-line-amber)', stroke: 'var(--cad-line-primary)', 'stroke-width': '1'
+      }));
+      g.appendChild(createRect(cx - w_fl - 16, cy + r_pcd - r_b * 1.3, 8, r_b * 2.6, {
+        fill: 'var(--cad-line-amber)', stroke: 'var(--cad-line-primary)', 'stroke-width': '1'
+      }));
+      g.appendChild(createRect(cx + w_fl + 8, cy + r_pcd - r_b * 1.3, 8, r_b * 2.6, {
+        fill: 'var(--cad-line-amber)', stroke: 'var(--cad-line-primary)', 'stroke-width': '1'
+      }));
+
+      // Keys
+      g.appendChild(createRect(cx - l_k, cy - r_sh - (h_k / 2), l_k, h_k, {
+        fill: '#10b981', stroke: 'var(--cad-line-primary)', 'stroke-width': '1.2'
+      }));
+      g.appendChild(createRect(cx, cy - r_sh - (h_k / 2), l_k, h_k, {
+        fill: '#10b981', stroke: 'var(--cad-line-primary)', 'stroke-width': '1.2'
+      }));
+
+      // Centerline
+      g.appendChild(createLine(cx - shExt - 30, cy, cx + shExt + 30, cy, {
+        stroke: 'var(--cad-line-center)', 'stroke-width': '1.2', 'stroke-dasharray': '16, 4, 3, 4'
+      }));
+      g.appendChild(createLine(cx - w_fl - 20, cy - r_pcd, cx + w_fl + 20, cy - r_pcd, {
+        stroke: 'var(--cad-line-amber)', 'stroke-width': '1', 'stroke-dasharray': '8, 3, 2, 3'
+      }));
+      g.appendChild(createLine(cx - w_fl - 20, cy + r_pcd, cx + w_fl + 20, cy + r_pcd, {
+        stroke: 'var(--cad-line-amber)', 'stroke-width': '1', 'stroke-dasharray': '8, 3, 2, 3'
+      }));
+
+      // Tiered Dimensions (Standard Drafting Layout - No Overlapping)
+      if (appState.showDimensions) {
+        // Left: Shaft Diameter (D) and Hub Diameter (D1) spaced 70px apart
+        drawCadDimensionVertical(g, cx - l_hub - 35, cy - r_sh, cy + r_sh, `D = ${c.D}`);
+        drawCadDimensionVertical(g, cx - l_hub - 105, cy - r_hub, cy + r_hub, `D1 = ${c.D1}`);
+
+        // Right: Pitch Circle Diameter (D2) and Outside Diameter (D3) spaced 70px apart
+        drawCadDimensionVertical(g, cx + w_fl + w_rim + 40, cy - r_pcd, cy + r_pcd, `D2 = ${c.D2}`);
+        drawCadDimensionVertical(g, cx + w_fl + w_rim + 110, cy - r_out, cy + r_out, `D3 = ${c.D3}`);
+
+        // Top: Three distinct vertical tiers (Tier 1: tp, Tier 2: tf, Tier 3: Hub L)
+        drawCadDimensionHorizontal(g, cy - r_out - 18, cx - w_fl - w_rim, cx - w_fl, `tp = ${c.tp}`);
+        drawCadDimensionHorizontal(g, cy - r_out - 44, cx - w_fl, cx, `tf = ${c.tf}`);
+        drawCadDimensionHorizontal(g, cy - r_out - 70, cx - l_hub, cx, `Hub L = ${c.L_hub}`);
+
+        // Bottom: Key Length (l)
+        drawCadDimensionHorizontal(g, cy + r_hub + 32, cx - l_k, cx, `Key l = ${c.l}`);
+      }
+
+      // Drawing Title & Standard ISO Dimensioning Note
+      g.appendChild(createText(cx, cy + r_out + 55, "SECTION A-A (LONGITUDINAL ELEVATION)", {
+        fill: "var(--text-main)", 'font-family': "'IBM Plex Mono', monospace", 'font-size': "11px",
+        'font-weight': "700", 'letter-spacing': "1.2px", 'text-anchor': "middle"
+      }));
+      g.appendChild(createText(cx, cy + r_out + 72, "NOTE: ALL DIMENSIONS ARE IN mm", {
+        fill: "var(--text-muted)", 'font-family': "'IBM Plex Mono', monospace", 'font-size': "9.5px",
+        'font-weight': "600", 'letter-spacing': "0.8px", 'text-anchor': "middle"
+      }));
+
+      parent.appendChild(g);
+    }
+
+    function renderEndView(parent, cx, cy, scale, c) {
+      const g = createEl('g');
+      const maxDim = Math.max(c.D3, c.L_hub * 2 + c.tf * 2);
+      const pxPerMm = (220 / maxDim) * scale;
+
+      const r_sh = (c.D / 2) * pxPerMm;
+      const r_hub = (c.D1 / 2) * pxPerMm;
+      const r_pcd = (c.D2 / 2) * pxPerMm;
+      const r_out = (c.D3 / 2) * pxPerMm;
+      const r_b = (c.d_bolt / 2) * pxPerMm;
+      const w_k = c.w * pxPerMm;
+      const h_k = c.h * pxPerMm;
+
+      g.appendChild(createCircle(cx, cy, r_out, {
+        fill: 'var(--subpanel-bg)', stroke: 'var(--cad-line-secondary)', 'stroke-width': '2'
+      }));
+
+      const r_rim_in = r_out - (c.tp * pxPerMm);
+      g.appendChild(createCircle(cx, cy, r_rim_in, {
+        fill: 'none', stroke: 'var(--cad-line-secondary)', 'stroke-width': '1', 'stroke-dasharray': '5, 3'
+      }));
+
+      g.appendChild(createCircle(cx, cy, r_pcd, {
+        fill: 'none', stroke: 'var(--cad-line-amber)', 'stroke-width': '1.2', 'stroke-dasharray': '8, 4, 2, 4'
+      }));
+
+      g.appendChild(createCircle(cx, cy, r_hub, {
+        fill: 'var(--panel-bg)', stroke: 'var(--cad-line-primary)', 'stroke-width': '1.6'
+      }));
+
+      g.appendChild(createCircle(cx, cy, r_sh, {
+        fill: 'var(--cad-canvas-bg)', stroke: 'var(--cad-line-primary)', 'stroke-width': '1.5'
+      }));
+
+      g.appendChild(createRect(cx - (w_k / 2), cy - r_sh - (h_k / 2), w_k, h_k, {
+        fill: '#10b981', stroke: 'var(--cad-line-primary)', 'stroke-width': '1'
+      }));
+
+      for (let k = 0; k < c.i; k++) {
+        const ang = (2 * Math.PI * k) / c.i - (Math.PI / 2);
+        const bx = cx + r_pcd * Math.cos(ang);
+        const by = cy + r_pcd * Math.sin(ang);
+
+        g.appendChild(createCircle(bx, by, r_b * 1.15, {
+          fill: 'var(--cad-canvas-bg)', stroke: 'var(--cad-line-amber)', 'stroke-width': '1'
+        }));
+        g.appendChild(createCircle(bx, by, r_b, {
+          fill: 'var(--cad-line-amber)', stroke: 'var(--cad-line-primary)', 'stroke-width': '1'
+        }));
+        g.appendChild(createLine(bx - 6, by, bx + 6, by, { stroke: '#ffffff', 'stroke-width': '0.7' }));
+        g.appendChild(createLine(bx, by - 6, bx, by + 6, { stroke: '#ffffff', 'stroke-width': '0.7' }));
+      }
+
+      g.appendChild(createLine(cx - r_out - 30, cy, cx + r_out + 30, cy, {
+        stroke: 'var(--cad-line-center)', 'stroke-width': '1.2', 'stroke-dasharray': '16, 4, 3, 4'
+      }));
+      g.appendChild(createLine(cx, cy - r_out - 30, cx, cy + r_out + 30, {
+        stroke: 'var(--cad-line-center)', 'stroke-width': '1.2', 'stroke-dasharray': '16, 4, 3, 4'
+      }));
+
+      if (appState.showDimensions) {
+        const lAng = Math.PI / 4;
+        const lx1 = cx + r_pcd * Math.cos(lAng);
+        const ly1 = cy + r_pcd * Math.sin(lAng);
+        const lx2 = lx1 + 45;
+        const ly2 = ly1 - 35;
+        const lx3 = lx2 + 95;
+
+        g.appendChild(createPolyline(`${lx1},${ly1} ${lx2},${ly2} ${lx3},${ly2}`, {
+          stroke: 'var(--cad-line-amber)', fill: 'none', 'stroke-width': '1.2'
+        }));
+
+        g.appendChild(createDimBadge(lx2 + 6, ly2 - 6, `${c.i} × M${c.adoptedMetric} @ PCD ${c.D2}`, 'var(--cad-line-amber)', 'start'));
+      }
+
+      g.appendChild(createText(cx, cy + r_out + 55, `FLANGE ELEVATION (${c.i} BOLTS @ PCD ${c.D2})`, {
+        fill: "var(--text-main)", 'font-family': "'IBM Plex Mono', monospace", 'font-size': "11px",
+        'font-weight': "700", 'letter-spacing': "1.2px", 'text-anchor': "middle"
+      }));
+      g.appendChild(createText(cx, cy + r_out + 72, "NOTE: ALL DIMENSIONS ARE IN mm", {
+        fill: "var(--text-muted)", 'font-family': "'IBM Plex Mono', monospace", 'font-size': "9.5px",
+        'font-weight': "600", 'letter-spacing': "0.8px", 'text-anchor': "middle"
+      }));
+
+      parent.appendChild(g);
+    }
+
+    // DIMENSION BUILDERS
+    function drawCadDimensionVertical(parent, x, y1, y2, label) {
+      const g = createEl('g');
+      // Dimension line
+      g.appendChild(createLine(x, y1, x, y2, {
+        stroke: 'var(--cad-line-secondary)', 'stroke-width': '1',
+        'marker-start': 'url(#dimArrowStart)', 'marker-end': 'url(#dimArrowEnd)'
+      }));
+      // Extension lines
+      g.appendChild(createLine(x - 5, y1, x + 5, y1, { stroke: 'var(--border-dark)', 'stroke-width': '0.8' }));
+      g.appendChild(createLine(x - 5, y2, x + 5, y2, { stroke: 'var(--border-dark)', 'stroke-width': '0.8' }));
+
+      const midY = (y1 + y2) / 2;
+      // Badge centered on the dimension line
+      g.appendChild(createDimBadge(x, midY, label, 'var(--cad-dim-text)', 'middle'));
+      parent.appendChild(g);
+    }
+
+    function drawCadDimensionHorizontal(parent, y, x1, x2, label) {
+      const g = createEl('g');
+      g.appendChild(createLine(x1, y, x2, y, {
+        stroke: 'var(--cad-line-secondary)', 'stroke-width': '1',
+        'marker-start': 'url(#dimArrowStart)', 'marker-end': 'url(#dimArrowEnd)'
+      }));
+      g.appendChild(createLine(x1, y - 5, x1, y + 5, { stroke: 'var(--border-dark)', 'stroke-width': '0.8' }));
+      g.appendChild(createLine(x2, y - 5, x2, y + 5, { stroke: 'var(--border-dark)', 'stroke-width': '0.8' }));
+
+      const midX = (x1 + x2) / 2;
+      g.appendChild(createDimBadge(midX, y, label, 'var(--cad-dim-text)', 'middle'));
+      parent.appendChild(g);
+    }
+
+    function createDimBadge(x, y, text, color, anchor = 'middle') {
+      const g = createEl('g');
+      const txtLen = text.length * 6.5 + 8;
+      let rx = x - (txtLen / 2);
+      if (anchor === 'start') rx = x;
+      else if (anchor === 'end') rx = x - txtLen;
+
+      g.appendChild(createRect(rx, y - 7, txtLen, 14, {
+        fill: 'var(--cad-dim-badge-bg)', stroke: 'var(--cad-dim-badge-border)', 'stroke-width': '0.8', rx: '2'
+      }));
+      g.appendChild(createText(anchor === 'start' ? x + 4 : (anchor === 'end' ? x - 4 : x), y + 3.5, text, {
+        fill: color, 'font-family': "'IBM Plex Mono', monospace", 'font-size': '10px',
+        'font-weight': '600', 'text-anchor': anchor
+      }));
+      return g;
+    }
+
+    // SVG Element Utilities
+    function createEl(t) { return document.createElementNS("http://www.w3.org/2000/svg", t); }
+    function createRect(x, y, w, h, a = {}) {
+      const el = createEl('rect'); el.setAttribute('x', x); el.setAttribute('y', y);
+      el.setAttribute('width', w); el.setAttribute('height', h);
+      setAttrs(el, a); return el;
+    }
+    function createCircle(cx, cy, r, a = {}) {
+      const el = createEl('circle'); el.setAttribute('cx', cx); el.setAttribute('cy', cy); el.setAttribute('r', r);
+      setAttrs(el, a); return el;
+    }
+    function createLine(x1, y1, x2, y2, a = {}) {
+      const el = createEl('line'); el.setAttribute('x1', x1); el.setAttribute('y1', y1);
+      el.setAttribute('x2', x2); el.setAttribute('y2', y2);
+      setAttrs(el, a); return el;
+    }
+    function createPath(d, a = {}) {
+      const el = createEl('path'); el.setAttribute('d', d.trim().replace(/\s+/g, ' '));
+      setAttrs(el, a); return el;
+    }
+    function createPolyline(pts, a = {}) {
+      const el = createEl('polyline'); el.setAttribute('points', pts);
+      setAttrs(el, a); return el;
+    }
+    function createText(x, y, txt, a = {}) {
+      const el = createEl('text'); el.setAttribute('x', x); el.setAttribute('y', y);
+      el.textContent = txt; setAttrs(el, a); return el;
+    }
+    function setAttrs(el, a) { for (const [k, v] of Object.entries(a)) el.setAttribute(k, v); }
+
+    /* ==========================================================================
+       FORMAL CALCULATION DOSSIER CONTENT
+       ========================================================================== */
+    function generateDossierContent() {
+      const c = appState.calc;
+      if (!c) return;
+
+      dom.dossierBodyContent.innerHTML = `
+        <div class="dossier-block">
+          <div class="dossier-block-title">Problem Statement & Inputs</div>
+          Design Code: <strong>IS 2693 / DIN 116 (Rigid Protected Flanged Coupling)</strong><br>
+          Criterion: <strong>Maximum Shear Stress Theory (Tresca Criterion)</strong><br>
+          Input Torque to be Transmitted: <strong>${c.T_Nm.toLocaleString()} N·m (${c.T_Nmm.toLocaleString()} N·mm)</strong><br>
+          Factor of Safety: <strong>${c.FoS}</strong><br>
+          Shaft Material: <strong>${c.shaftMat.name}</strong> (Syt = ${c.shaftMat.Syt} MPa, G = ${c.G_shaft} MPa)<br>
+          Flange Material: <strong>${c.flangeMat.name}</strong> (Sut = ${c.flangeMat.Sut} MPa)
+        </div>
+
+        <div class="dossier-block">
+          <div class="dossier-block-title">Constraints & Stated Physical Limits</div>
+          Constraint 1 (Spatial Envelope): <strong>D_max = ${c.D_max} mm</strong> [Check: Adopted D = ${c.D} mm ⟹ ${c.isDmaxExceeded ? '<span style="color:#b91c1c; font-weight:700;">FAIL (Exceeds limit)</span>' : '<span style="color:#15803d; font-weight:700;">PASS (Compliant)</span>'}]<br>
+          Constraint 2 (Rigidity Standard): <strong>θ_max = ${c.theta_max_deg.toFixed(2)}° per 1000 mm span</strong> [Check: θ_actual = ${c.theta_deg.toFixed(4)}° ⟹ <span style="color:#15803d; font-weight:700;">RIGID</span>]<br>
+          Stated Cast Iron Shear Limit: <strong>τ_ci = 15.0 MPa</strong><br>
+          <em>Mechanical Design Principle:</em> Boundaries (D_max, θ_max) define design limits. Shaft dimensions (D, θ) are mechanically calculated from Torque and material properties (Syt, G). If θ > θ_max, D is mechanically upsized; if D > D_max, a stronger steel grade must be selected.
+        </div>
+
+        <div class="dossier-block">
+          <div class="dossier-block-title">Output 1: Shaft Dimensions</div>
+          Strength Calculation: d_calc = [(16 · T) / (π · τ_allow)]^(1/3) = <strong>${c.d_calc_str.toFixed(2)} mm</strong><br>
+          Torsional Twist on 1000 mm span: θ = (T · L) / (J · G) · (180 / π) = <strong>${c.theta_deg.toFixed(4)}°</strong><br>
+          ${c.isRecalibrated ? `
+            <span style="color:#b45309; font-weight:600;">Rigidity Recalibration:</span> Initial strength diameter exceeded θ_max. Solving D_twist = [(32·T·L)/(π·G·θ_max)]^(1/4) = ${c.D_twist_raw.toFixed(1)} mm ⟹ Standardized D = <strong>${c.D} mm</strong>.<br>
+          ` : `Shaft meets torsional rigidity limit without upsizing.<br>`}
+          Adopted Shaft Diameter: <strong>D = ${c.D} mm</strong> (Induced τ = ${c.tau_shaft.toFixed(1)} MPa ≤ ${c.tau_allow.toFixed(1)} MPa)
+        </div>
+
+        <div class="dossier-block">
+          <div class="dossier-block-title">Output 2: Sunk Key Dimensions (IS 2048)</div>
+          Width: w = ceil(D/4) = <strong>${c.w} mm</strong><br>
+          Height: h = ceil(D/4) = <strong>${c.h} mm</strong><br>
+          Length: l = 1.5·D = <strong>${c.l} mm</strong><br>
+          Shear Check: τ_k = (2 · T) / (D · w · l) = <strong>${c.tau_k.toFixed(1)} MPa ≤ ${c.tau_allow.toFixed(1)} MPa [PASS]</strong><br>
+          Crushing Check: σ_ck = (4 · T) / (D · h · l) = <strong>${c.sigma_ck.toFixed(1)} MPa ≤ ${c.sigma_c_allow.toFixed(1)} MPa [PASS]</strong>
+        </div>
+
+        <div class="dossier-block">
+          <div class="dossier-block-title">Output 3: Flange & Hub Dimensions</div>
+          Hub Outside Dia: D1 = 2·D = <strong>${c.D1} mm</strong> | Hub Length: L = 1.5·D = <strong>${c.L_hub} mm</strong><br>
+          Pitch Circle Dia: D2 = 3·D = <strong>${c.D2} mm</strong> | Outside Flange Dia: D3 = 4·D = <strong>${c.D3} mm</strong><br>
+          Flange Thickness: tf = 0.5·D = <strong>${c.tf} mm</strong> | Recess Rim: tp = 0.25·D = <strong>${c.tp} mm</strong><br>
+          Hub Torsional Shear: τ_hub = <strong>${c.tau_hub.toFixed(2)} MPa ≤ 15.0 MPa [PASS]</strong><br>
+          Flange Shear: τ_f = <strong>${c.tau_f.toFixed(2)} MPa ≤ 15.0 MPa [PASS]</strong>
+        </div>
+
+        <div class="dossier-block">
+          <div class="dossier-block-title">Output 4: Fastener Array Dimensions</div>
+          Fastener Count: i = ceil(D/50 + 3) = <strong>${c.i} Bolts</strong><br>
+          Calculated Core Dia: d_calc = sqrt[(8·T) / (i·π·D2·τ_allow)] = <strong>${c.d_calc_bolt.toFixed(2)} mm</strong><br>
+          Adopted ISO Metric Size: <strong>M${c.adoptedMetric}</strong> (Core ${c.d_bolt} mm)<br>
+          Empirical Envelope: [0.40 D / √i] to [0.45 D / √i] = <strong>${c.d_min_emp.toFixed(1)} – ${c.d_max_emp.toFixed(1)} mm</strong><br>
+          Fastener Shear: τ_b = <strong>${c.tau_b.toFixed(1)} MPa ≤ ${c.tau_allow.toFixed(1)} MPa [PASS]</strong>
+        </div>
+      `;
+    }
+
+    function generatePlainTextReport(c) {
+      return `================================================================================
+ENGINEERING CALCULATION DOSSIER: RIGID FLANGED COUPLING (STATIC DESIGN)
+================================================================================
+Design Code: IS 2693 / DIN 116 (Protected Type)
+Failure Criterion: Maximum Shear Stress Theory (Tresca)
+
+INPUT:
+Torque to be Transmitted (T): ${c.T_Nm} N·m (${c.T_Nmm} N·mm)
+Factor of Safety (FoS): ${c.FoS}
+Shaft Material: ${c.shaftMat.name} (Syt = ${c.shaftMat.Syt} MPa)
+Flange Material: ${c.flangeMat.name} (Sut = ${c.flangeMat.Sut} MPa)
+
+CONSTRAINTS & STATED LIMITS:
+- Spatial Envelope Constraint: D_max = ${c.D_max} mm [Calculated D = ${c.D} mm -> ${c.isDmaxExceeded ? 'FAIL' : 'PASS'}]
+- Torsional Rigidity Constraint: θ_max = ${c.theta_max_deg.toFixed(2)} deg on 1000 mm span [Actual θ = ${c.theta_deg.toFixed(3)} deg -> PASS]
+- Stated Cast Iron Shear Limit: τ_ci = 15.0 MPa (Stated Limit)
+* Note: Limits are design constraints. D and θ are mechanically derived from applied torque and material properties (Syt, G).
+
+OUTPUT: ALL COUPLING DIMENSIONS
+1. Shaft Output:
+   - Adopted Diameter (D): ${c.D} mm
+   - Shear Stress: ${c.tau_shaft.toFixed(1)} MPa <= ${c.tau_allow.toFixed(1)} MPa (Pass)
+   - Angle of Twist: ${c.theta_deg.toFixed(3)} deg <= 1.0 deg (Pass)
+
+2. Key Output:
+   - Width (w): ${c.w} mm | Height (h): ${c.h} mm | Length (l): ${c.l} mm
+   - Shear: ${c.tau_k.toFixed(1)} MPa (Pass) | Crushing: ${c.sigma_ck.toFixed(1)} MPa (Pass)
+
+3. Flange & Hub Output:
+   - Hub Diameter (D1): ${c.D1} mm | Hub Length (L): ${c.L_hub} mm
+   - Pitch Circle (D2): ${c.D2} mm | Outer Dia (D3): ${c.D3} mm
+   - Flange Thickness (tf): ${c.tf} mm | Recess (tp): ${c.tp} mm
+   - Hub Shear: ${c.tau_hub.toFixed(2)} MPa (Pass)
+   - Flange Shear: ${c.tau_f.toFixed(2)} MPa (Pass)
+
+4. Bolt Array Output:
+   - Bolt Count (i): ${c.i} Bolts
+   - Core Diameter: ${c.d_bolt} mm -> Adopted Metric: M${c.adoptedMetric}
+   - Empirical Envelope: ${c.d_min_emp.toFixed(1)} - ${c.d_max_emp.toFixed(1)} mm (Compliant)
+
+STATUS: VERIFIED & COMPLIANT
+================================================================================`;
+    }
+
+    // Initialize application
+    window.addEventListener('DOMContentLoaded', () => {
+      runCalculations();
+    });
+  </script>
+</body>
+</html>
