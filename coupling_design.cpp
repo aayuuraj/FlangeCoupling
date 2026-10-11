@@ -192,7 +192,43 @@ int main() {
 
     std::cout << "================================================================================\n";
     std::cout << "STATUS: >>> ALL DESIGN SPECIFICATIONS VERIFIED & COMPLIANT <<<\n";
-    std::cout << "================================================================================\n";
+    std::cout << "================================================================================\n\n";
+
+    // ASCII Technical CAD Schematic
+    std::cout << "--------------------------------------------------------------------------------\n";
+    std::cout << "                   CROSS-SECTION SCHEMATIC (IS 2693)\n";
+    std::cout << "--------------------------------------------------------------------------------\n";
+    std::cout << "                      +---------------------------------------------+\n";
+    std::cout << "                      |       OUTER FLANGE RIM  (D3 = " << std::setw(5) << D3 << " mm)      |\n";
+    std::cout << "                      +----------+-----------------------+----------+\n";
+    std::cout << "                      |          |  BOLT PCD (D2 = " << std::setw(5) << D2 << ")|          |\n";
+    std::cout << "                      |          |      [ (O) " << i << "x M" << adopted_metric << " ]     |          |\n";
+    std::cout << "                      |          +-----------------------+          |\n";
+    std::cout << "                      |   HUB    |   SUNKEY  w=" << w << " h=" << h << "     |   HUB    |\n";
+    std::cout << "  ====================| (D1=" << std::setw(3) << (int)D1 << ") |   +---------------+   | (D1=" << std::setw(3) << (int)D1 << ") |====================\n";
+    std::cout << "   SHAFT (D = " << std::setw(5) << D << ")  |          |   |===============|   |          |  SHAFT (D = " << std::setw(5) << D << ")\n";
+    std::cout << "  ====================|          |   +---------------+   |          |====================\n";
+    std::cout << "                      |          +-----------------------+          |\n";
+    std::cout << "                      |          |      [ (O) BOLT ]     |          |\n";
+    std::cout << "                      |          |  FLANGE THICKNESS     |          |\n";
+    std::cout << "                      +----------+-- (tf = " << std::setw(5) << tf << " mm) --+----------+\n";
+    std::cout << "                      |       OUTER FLANGE RIM  (D3 = " << std::setw(5) << D3 << " mm)      |\n";
+    std::cout << "                      +---------------------------------------------+\n";
+    std::cout << "                      <--Lhub=" << std::setw(5) << L_hub << "->|<-tf=" << std::setw(4) << tf << "->|\n\n";
+    std::cout << "  * NOTE: ALL DIMENSIONS ARE IN mm\n";
+    std::cout << "================================================================================\n\n";
+
+    // Export to file
+    std::ofstream reportFile("coupling_report_cpp.txt");
+    if (reportFile.is_open()) {
+        reportFile << "RIGID FLANGED COUPLING DESIGN - C++ CALCULATION REPORT (IS 2693)\n";
+        reportFile << "Torque T = " << T_Nm << " N*m | Shaft D = " << D << " mm | Hub D1 = " << D1 << " mm\n";
+        reportFile << "Pitch Circle D2 = " << D2 << " mm | Outer Flange D3 = " << D3 << " mm\n";
+        reportFile << "Key w=" << w << " h=" << h << " l=" << l << " mm | Fasteners: " << i << "x M" << adopted_metric << "\n";
+        reportFile << "Status: COMPLIANT\n";
+        reportFile.close();
+        std::cout << "-> Summary exported to 'coupling_report_cpp.txt'\n\n";
+    }
 
     return 0;
 }
