@@ -1,0 +1,11 @@
+# Compiled binaries
+coupling_design
+*.o
+*.out
+
+# Generated text reports
+coupling_report.txt
+coupling_report_cpp.txt
+
+# OS metadata
+.DS_Store

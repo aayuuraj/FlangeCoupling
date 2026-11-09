@@ -2,6 +2,9 @@
 
 A standalone CAD telemetry and engineering design workstation for the static design of **Rigid Flanged Couplings (Protected Type)** complying with standard machine design criteria (**IS 2693 / DIN 116 / ISO Standards** and **Tresca Maximum Shear Stress Theory**).
 
+- 🌐 **Live Web CAD Workstation:** [https://aayuuraj.github.io/FlangeCoupling/](https://aayuuraj.github.io/FlangeCoupling/)
+- 📄 **Project Report (ME 3104):** [https://aayuuraj.github.io/FlangeCoupling/Project_Report.html](https://aayuuraj.github.io/FlangeCoupling/Project_Report.html)
+
 ---
 
 ## Features
