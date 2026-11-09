@@ -1,9 +1,9 @@
 /**
- * ============================================================================
- * RIGID FLANGED COUPLING DESIGN (STATIC DESIGN) - C++ WORKSTATION
- * Standard: IS 2693 / DIN 116 / ISO Standards
- * Theory: Maximum Shear Stress Theory (Tresca Criterion)
- * ============================================================================
+- ============================================================================
+- RIGID FLANGED COUPLING DESIGN (STATIC DESIGN) - C++ WORKSTATION
+- Standard: IS 2693 / DIN 116 / ISO Standards
+- Theory: Maximum Shear Stress Theory (Tresca Criterion)
+- ============================================================================
  */
 
 #include <iostream>
@@ -13,6 +13,7 @@
 #include <vector>
 
 using namespace std;
+typedef long long ll;
 
 struct Material {
     string name;
@@ -25,6 +26,8 @@ struct Material {
 const vector<int> METRIC_BOLTS = {6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 27, 30, 36, 42};
 
 int main() {
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+
     cout << "================================================================================\n";
     cout << "    RIGID FLANGED COUPLING DESIGN - C++ WORKSTATION (IS 2693 / TRESCA)\n";
     cout << "================================================================================\n\n";
@@ -109,8 +112,7 @@ int main() {
     double T_Nmm = T_Nm * 1000.0;
     double tau_allow = shaftMat.Syt / (2.0 * FoS);
     double sigma_c_allow = shaftMat.Syt / FoS;
-    double tau_ci_limit = 15.0; // Stated cast iron shear limit
-
+    
     // 1. Shaft diameter from shear strength
     double d_calc_str = cbrt((16.0 * T_Nmm) / (M_PI * tau_allow));
     double D = max(20.0, ceil(d_calc_str / 5.0) * 5.0);
@@ -166,33 +168,70 @@ int main() {
     cout << "                 COUPLING CALCULATION RESULTS (ALL DIMS IN mm)\n";
     cout << "================================================================================\n";
     cout << fixed << setprecision(2);
+    
+    // 1. SHAFT DIMENSIONS
     cout << "1. SHAFT DIMENSIONS:\n";
     cout << "   - Calculated Strength Dia: " << d_calc_str << " mm\n";
     cout << "   - Adopted Standard Dia D : " << D << " mm\n";
-    cout << "   - Induced Shear Stress   : " << tau_shaft << " MPa <= " << tau_allow << " MPa [PASS]\n";
+    cout << "   - Induced Shear Stress   : " << tau_shaft << " MPa <= " << tau_allow << " MPa " 
+         << (tau_shaft <= tau_allow ? "[PASS]" : "[FAIL]") << "\n";
     cout << "   - Angular Twist on 1m    : " << setprecision(4) << theta_deg << " deg <= " << theta_max_deg << " deg\n";
     cout << "   - Constraint Check (Dmax): " << (isDmaxViolated ? "[FAIL: D > D_max]" : "[PASS: D <= D_max]") << "\n\n";
 
     cout << setprecision(2);
+    
+    // 2. KEY DIMENSIONS
     cout << "2. KEY DIMENSIONS (IS 2048):\n";
     cout << "   - Width (w): " << w << " mm | Height (h): " << h << " mm | Length (l): " << l << " mm\n";
-    cout << "   - Induced Shear Stress   : " << tau_k << " MPa <= " << tau_allow << " MPa [PASS]\n";
-    cout << "   - Induced Crushing Stress: " << sigma_ck << " MPa <= " << sigma_c_allow << " MPa [PASS]\n\n";
+    cout << "   - Induced Shear Stress   : " << tau_k << " MPa <= " << tau_allow << " MPa " 
+         << (tau_k <= tau_allow ? "[PASS]" : "[FAIL]") << "\n";
+    cout << "   - Induced Crushing Stress: " << sigma_ck << " MPa <= " << sigma_c_allow << " MPa " 
+         << (sigma_ck <= sigma_c_allow ? "[PASS]" : "[FAIL]") << "\n\n";
 
+    // 3. FLANGE & HUB DIMENSIONS
     cout << "3. FLANGE & HUB DIMENSIONS (IS 2693):\n";
     cout << "   - Hub Outer Dia (D1): " << D1 << " mm | Hub Length (L): " << L_hub << " mm\n";
     cout << "   - Pitch Circle  (D2): " << D2 << " mm | Flange Outer Dia (D3): " << D3 << " mm\n";
     cout << "   - Flange Thickness  : " << tf << " mm | Protective Rim (tp) : " << tp << " mm\n";
-    cout << "   - Hub Shear Stress  : " << tau_hub << " MPa <= 15.0 MPa [PASS]\n";
-    cout << "   - Flange Shear Stress: " << tau_f << " MPa <= 15.0 MPa [PASS]\n\n";
+    cout << "   - Hub Shear Stress  : " << tau_hub << " MPa <= 15.0 MPa " 
+         << (tau_hub <= 15.0 ? "[PASS]" : "[FAIL]") << "\n";
+    cout << "   - Flange Shear Stress: " << tau_f << " MPa <= 15.0 MPa " 
+         << (tau_f <= 15.0 ? "[PASS]" : "[FAIL]") << "\n\n";
 
+    // 4. BOLT ARRAY
     cout << "4. BOLT ARRAY:\n";
     cout << "   - Number of Bolts (i): " << i << " Bolts\n";
     cout << "   - Core Diameter Calc : " << d_calc_bolt << " mm\n";
-    cout << "   - Adopted Fastener   : M" << adopted_metric << " (Shear Stress = " << tau_bolt << " MPa <= " << tau_allow << " MPa)\n";
+    cout << "   - Adopted Fastener   : M" << adopted_metric << " (Shear Stress = " << tau_bolt 
+         << " MPa <= " << tau_allow << " MPa) " << (tau_bolt <= tau_allow ? "[PASS]" : "[FAIL]") << "\n";
+
+    // 5. GLOBAL STATUS & REMEDIATION ENGINE
+    bool allSafe = (tau_shaft <= tau_allow) && (tau_k <= tau_allow) && (sigma_ck <= sigma_c_allow) && 
+                   (tau_hub <= 15.0) && (tau_f <= 15.0) && (tau_bolt <= tau_allow) && (!isDmaxViolated);
 
     cout << "================================================================================\n";
-    cout << "STATUS: >>> ALL DESIGN SPECIFICATIONS VERIFIED & COMPLIANT <<<\n";
+    if (allSafe) {
+        cout << "STATUS: >>> ALL DESIGN SPECIFICATIONS VERIFIED & COMPLIANT <<<\n";
+    } else {
+        cout << "STATUS: >>> CRITICAL FAILURE DETECTED <<<\n";
+        cout << "\n--- DIAGNOSIS ---\n";
+        if (isDmaxViolated) {
+            cout << "[!] SHAFT SPATIAL CONFLICT: Required D exceeds D_max.\n";
+            cout << "    -> FIX: Select a higher-grade alloy steel (e.g., 40Cr4Mo2) to increase Syt, or reduce FoS.\n";
+        }
+        if (tau_k > tau_allow || sigma_ck > sigma_c_allow) {
+            cout << "[!] KEY STRESS FAILURE: Key dimensions (derived from D) cannot handle the torque.\n";
+            cout << "    -> FIX: Artificially upsize the shaft by tightening the max twist limit (theta_max), which will force a larger key.\n";
+        }
+        if (tau_hub > 15.0 || tau_f > 15.0) {
+            cout << "[!] CAST IRON SHEAR FAILURE: Flange body is yielding.\n";
+            cout << "    -> FIX: Upgrade to FG 260 Cast Iron, or increase geometric multipliers for Hub Dia/Flange Thickness.\n";
+        }
+        if (tau_bolt > tau_allow) {
+            cout << "[!] FASTENER SHEAR FAILURE: Bolts are yielding at the pitch circle.\n";
+            cout << "    -> FIX: Manually adopt a larger metric bolt size than M" << adopted_metric << ".\n";
+        }
+    }
     cout << "================================================================================\n\n";
 
     return 0;
