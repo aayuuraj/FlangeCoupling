@@ -3,7 +3,6 @@
 A standalone CAD telemetry and engineering design workstation for the static design of **Rigid Flanged Couplings (Protected Type)** complying with standard machine design criteria (**IS 2693 / DIN 116 / ISO Standards** and **Tresca Maximum Shear Stress Theory**).
 
 - 🌐 **Live Web CAD Workstation:** [https://aayuuraj.github.io/FlangeCoupling/](https://aayuuraj.github.io/FlangeCoupling/)
-- 📄 **Project Report (ME 3104):** [https://aayuuraj.github.io/FlangeCoupling/Project_Report.html](https://aayuuraj.github.io/FlangeCoupling/Project_Report.html)
 
 ---
 
@@ -27,26 +26,17 @@ A standalone CAD telemetry and engineering design workstation for the static des
 
 ## Quick Start & Evaluation
 
-### 1. Python Interactive Program (Recommended for Demonstration)
-Run directly in any terminal:
-```bash
-python3 coupling_design.py
-```
-- Interactive prompts for Torque (or Power/RPM), Factor of Safety, Material selection, and Constraints ($D_{max}, \theta_{max}$).
-- Generates a full mechanical design report, stress checks, Pass/Fail verification, and terminal ASCII technical cross-section schematic.
-- Automatically exports report to `coupling_report.txt`.
-
-### 2. C++ Program
+### 1. C++ Program (CLI Workstation)
 Compile and execute using standard `g++` / `clang++`:
 ```bash
 g++ -O2 -std=c++17 coupling_design.cpp -o coupling_design
 ./coupling_design
 ```
 
-### 3. Interactive Web CAD Workstation
+### 2. Interactive Web CAD Workstation
 Open `index.html` in any web browser:
 ```bash
 open index.html
 ```
+Or access live at: [https://aayuuraj.github.io/FlangeCoupling/](https://aayuuraj.github.io/FlangeCoupling/)
 No build steps or dependencies required.
-
